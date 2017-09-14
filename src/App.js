@@ -4,7 +4,7 @@ import Home from './pages/Home/';
 import Login from './pages/Login/';
 import Admin from './pages/Admin/';
 import NotFound from './pages/NotFound';
-import './styles/globalStyles';
+import 'styles/globalStyles';
 
 class App extends Component {
   render() {
