@@ -1,7 +1,9 @@
 # Shop Management
 
-### Wireframes
-Updating...
+### Installation
+
++ Run `npm install` or `yarn`
++ Run `npm start` or `yarn start` for develop
 
 ### Built with tech stacks
 
