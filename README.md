@@ -15,3 +15,4 @@
 + Axios (HTTP Request)
 + Firebase (Database & Authentication)
 + Blueprint (UI toolkit)
++ Styled Components (Use the best bits of ES6 and CSS to style your apps)
