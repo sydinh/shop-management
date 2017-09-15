@@ -2,7 +2,6 @@ import React from 'react';
 import { render } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import App from './App';
-import registerServiceWorker from './registerServiceWorker';
 import '@blueprintjs/core/dist/blueprint.css';
 import 'flexboxgrid/dist/flexboxgrid.min.css';
 
@@ -27,5 +26,3 @@ if (module.hot) {
     );
   });
 }
-
-registerServiceWorker();
