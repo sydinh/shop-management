@@ -2,13 +2,22 @@ import React from 'react';
 import styled from 'styled-components';
 import { fakeAuth } from 'fakeAuth';
 import { Redirect } from 'react-router-dom';
+import {
+  Button,
+} from '@blueprintjs/core';
 
 const LoginContainer = styled.div`
   display: flex;
-  align-items: center;
   justify-content: center;
-  height: 100vh;
-  font-size: 10rem;
+  margin-top: 50px;
+`;
+
+const LoginBox = styled.div`
+  width: 400px;
+
+  form {
+    padding: 10px 20px;
+  }
 `;
 
 class Login extends React.Component {
@@ -16,16 +25,24 @@ class Login extends React.Component {
     super();
     this.state = {
       redirectToReferrer: false,
+      loading: false,
     }
     this.login = this.login.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   login() {
+    this.setState({ loading: true });
     fakeAuth.authenticate(() => {
       this.setState({
         redirectToReferrer: true,
+        loading: false,
       });
     })
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
   }
 
   render() {
@@ -40,8 +57,25 @@ class Login extends React.Component {
 
     return (
       <LoginContainer>
-        Login
-        <button className='pt-button pt-large pt-intent-warning' onClick={this.login}>Login</button>
+        <LoginBox className='pt-card pt-elevation-1'>
+          <form onSubmit={this.handleSubmit}>
+            <div className='pt-form-group'>
+              <div className='pt-form-content'>
+                <input id="username" className='pt-input pt-large pt-fill' placeholder='Username' type="text" dir="auto" disabled />
+              </div>
+            </div>
+            <div className='pt-form-group'>
+              <div className='pt-form-content'>
+                <input id="password" className='pt-input pt-large pt-fill' placeholder='Password' type="password" dir="auto" disabled />
+              </div>
+            </div>
+            <div className='center-xs'>
+              <Button className='pt-large pt-intent-primary' loading={this.state.loading} onClick={this.login}>
+                Login
+              </Button>
+            </div>
+          </form>
+        </LoginBox>
       </LoginContainer>
     );
   }

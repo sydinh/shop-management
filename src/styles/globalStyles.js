@@ -92,5 +92,8 @@ injectGlobal`
 
   body {
     font-family: "Poppins", sans-serif !important;
+
+    // Navbar fixed
+    padding-top: 50px;
   }
 `;

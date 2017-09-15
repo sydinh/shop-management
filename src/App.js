@@ -5,7 +5,7 @@ import Login from './pages/Login/';
 import Admin from './pages/Admin/';
 import NotFound from './pages/NotFound';
 import { fakeAuth } from 'fakeAuth';
-import LogoutButton from 'pages/Login/LogoutButton';
+import Header from 'layouts/Header';
 import 'styles/globalStyles';
 
 const AuthRoute = ({ component: Component, ...rest }) => {
@@ -29,7 +29,7 @@ class App extends Component {
     return (
       <BrowserRouter>
         <div>
-          <LogoutButton />
+          <Header />
           <Switch>
             <Route exact path='/' component={Home} />
             <Route path='/login' component={Login} />
