@@ -5,6 +5,7 @@ import { Redirect } from 'react-router-dom';
 import {
   Button,
 } from '@blueprintjs/core';
+import firebase, { auth } from '../../Firebase';
 
 const LoginContainer = styled.div`
   display: flex;
@@ -26,23 +27,51 @@ class Login extends React.Component {
     this.state = {
       redirectToReferrer: false,
       loading: false,
+      email: '',
+      password: '',
+      user: null,
+      error: null,
     }
     this.login = this.login.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
-  login() {
+  login(e) {
+    e.preventDefault();
     this.setState({ loading: true });
-    fakeAuth.authenticate(() => {
-      this.setState({
-        redirectToReferrer: true,
-        loading: false,
+    // fakeAuth.authenticate(() => {
+    //   this.setState({
+    //     redirectToReferrer: true,
+    //     loading: false,
+    //     username: '',
+    //     password: '',
+    //   });
+    // })
+    firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
+      .then(user => {
+        this.setState({
+          error: null,
+          loading: false,
+          user: user.email,
+        });
+      })
+      .catch(error => {
+        this.setState({
+          error: error.message,
+          loading: false,
+        });
       });
-    })
   }
 
   handleSubmit(e) {
     e.preventDefault();
+  }
+
+  handleChange(e) {
+    this.setState({
+      [e.target.name]: e.target.value
+    })
   }
 
   render() {
@@ -58,19 +87,41 @@ class Login extends React.Component {
     return (
       <LoginContainer>
         <LoginBox className='pt-card pt-elevation-1'>
-          <form onSubmit={this.handleSubmit}>
+          <form onSubmit={this.login}>
+            {this.state.user &&
+              <p>{this.state.user}</p>
+            }
+            {this.state.error &&
+              <div className='pt-callout pt-intent-danger' style={{ marginBottom: 20 }}>{this.state.error}</div>
+            }
             <div className='pt-form-group'>
               <div className='pt-form-content'>
-                <input id="username" className='pt-input pt-large pt-fill' placeholder='Username' type="text" dir="auto" disabled />
+                <input
+                  type='text'
+                  id='email'
+                  name='email'
+                  className='pt-input pt-large pt-fill'
+                  placeholder='Email'
+                  onChange={this.handleChange}
+                  value={this.state.username}
+                />
               </div>
             </div>
             <div className='pt-form-group'>
               <div className='pt-form-content'>
-                <input id="password" className='pt-input pt-large pt-fill' placeholder='Password' type="password" dir="auto" disabled />
+                <input
+                  type="password"
+                  id='password'
+                  name='password'
+                  className='pt-input pt-large pt-fill'
+                  placeholder='Password'
+                  onChange={this.handleChange}
+                  value={this.state.password}
+                />
               </div>
             </div>
             <div className='center-xs'>
-              <Button className='pt-large pt-intent-primary' loading={this.state.loading} onClick={this.login}>
+              <Button type='submit' className='pt-large pt-intent-primary' loading={this.state.loading}>
                 Login
               </Button>
             </div>
