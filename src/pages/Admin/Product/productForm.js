@@ -76,7 +76,8 @@ const SubmitButton = styled.button.attrs({
 class ProductForm extends Component {
 
   renderInputField = field => {
-    const className = `${field.className} ${field.meta.touched && field.meta.error ? 'input-error' : ''} `;
+    const { touched, error } = field.meta;
+    const className = `${field.className} ${touched && error ? 'input-error' : ''}`;
     return(
       <div>
         <ProductInput
@@ -87,13 +88,14 @@ class ProductForm extends Component {
           type={field.type}
           dir={field.dir}
         />
-        {field.meta.touched && field.meta.error ? <ProductInputError><small>{field.meta.error}</small></ProductInputError> : ''}
+        { touched && error ? <ProductInputError><small>{error}</small></ProductInputError> : '' }
       </div>
     );
   }
 
   renderTextareaField = field => {
-    const className = `${field.className} ${field.meta.touched && field.meta.error ? 'input-error' : ''} `;
+    const { touched, error } = field.meta;
+    const className = `${field.className} ${touched && error ? 'input-error' : ''}`;
     return(
       <div>
         <ProductTextarea
@@ -103,7 +105,7 @@ class ProductForm extends Component {
           placeholder={field.placeholder}
           dir={field.dir}
         />
-        {field.meta.touched && field.meta.error ? <ProductTextareaError><small>{field.meta.error}</small></ProductTextareaError> : ''}
+        { touched && error ? <ProductTextareaError><small>{error}</small></ProductTextareaError> : '' }
       </div>
     );
   }
@@ -223,29 +225,28 @@ const mapDispatchToProps = dispatch => {
 
 const validate = values => {
   const errors = {};
-
-  if (!values.productName) {
+  const { productName, productPrice, productDescription } = values;
+  if (!productName) {
     errors.productName = 'Required';
-  } else if (values.productName.length > 15) {
+  } else if (productName.length > 15) {
     errors.productName = 'Must be 15 characters or less';
-  } else if (values.productName.length < 5) {
+  } else if (productName.length < 5) {
     errors.productName = 'Must be 5 characters or more';
-  } else if (!isNaN(Number(values.productName))) {
-    errors.productName = 'Must be a string or string and number';
+  } else if (!isNaN(Number(productName))) {
+    errors.productName = 'Must be a string';
   };
 
-  if (!values.productPrice) {
+  if (!productPrice) {
     errors.productPrice = 'Required';
-  } else if (!/^[0-9]*$/.test(values.productPrice)) {
-    errors.productPrice = 'Price must be number';
+  } else if (!/^[0-9]*$/.test(productPrice)) {
+    errors.productPrice = 'Must be number';
   };
 
-  if (!values.productDescription) {
+  if (!productDescription) {
     errors.productDescription = 'Required';
-  } else if (values.productDescription.length < 8) {
+  } else if (productDescription.length < 8) {
     errors.productDescription = 'Must be 8 characters or more';
-  }
-
+  };
   return errors;
 };
 
@@ -254,8 +255,8 @@ const createReduxForm = reduxForm({
   validate,
 });
 
-const createConnect = connect(mapStateToProps, mapDispatchToProps)(ProductForm);
+const createConnection = connect(mapStateToProps, mapDispatchToProps)(ProductForm);
 
-const ProductFormContainer = createReduxForm(createConnect)
+const ProductFormContainer = createReduxForm(createConnection);
 
 export default ProductFormContainer;
