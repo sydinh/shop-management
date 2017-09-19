@@ -7,10 +7,6 @@ import { Grid, Row, Col } from 'react-flexbox-grid';
 import styled from 'styled-components';
 import { addProduct } from 'actions';
 
-const SectionWrapper = styled.div.attrs({
-  className: 'container'
-})``;
-
 const Section = styled.section.attrs({
   className: props => props.product ? 'section-product' : '' ,
 })`
@@ -119,93 +115,91 @@ class ProductForm extends Component {
   render() {
     const { handleSubmit, pristine, submitting, invalid } = this.props;
     return(
-      <SectionWrapper>
-        <Grid fluid>
-          <Section product>
-            <SectionHeading>Add product</SectionHeading>
-            <SectionInner>
-              <form onSubmit={handleSubmit(this.onSubmit)}>
-                <Row>
-                  <Col xs={6} md={2}>
-                    <ProductNameLabel>
-                      Name
-                    </ProductNameLabel>
-                  </Col>
-                  <Col xs={6} md={10} className="pt-form-content">
-                    <Field
-                      name="productName"
-                      component={this.renderInputField}
-                      className="pt-input"
-                      placeholder="Product name"
-                      type="text"
-                      dir="auto"
-                    />
-                  </Col>
-                </Row>
-                <br />
+      <Grid>
+        <Section product>
+          <SectionHeading>Add product</SectionHeading>
+          <SectionInner>
+            <form onSubmit={handleSubmit(this.onSubmit)}>
+              <Row>
+                <Col xs={6} md={2}>
+                  <ProductNameLabel>
+                    Name
+                  </ProductNameLabel>
+                </Col>
+                <Col xs={6} md={10} className="pt-form-content">
+                  <Field
+                    name="productName"
+                    component={this.renderInputField}
+                    className="pt-input"
+                    placeholder="Product name"
+                    type="text"
+                    dir="auto"
+                  />
+                </Col>
+              </Row>
+              <br />
 
-                <Row>
-                  <Col xs={6} md={2}>
-                    <ProductPriceLabel>
-                      Price
-                    </ProductPriceLabel>
-                  </Col>
-                  <Col xs={6} md={10} className="pt-form-content">
-                    <Field
-                      name="productPrice"
-                      component={this.renderInputField}
-                      className="pt-input"
-                      placeholder="Product price"
-                      type="text"
-                      dir="auto"
-                    />
-                  </Col>
-                </Row>
-                <br />
+              <Row>
+                <Col xs={6} md={2}>
+                  <ProductPriceLabel>
+                    Price
+                  </ProductPriceLabel>
+                </Col>
+                <Col xs={6} md={10} className="pt-form-content">
+                  <Field
+                    name="productPrice"
+                    component={this.renderInputField}
+                    className="pt-input"
+                    placeholder="Product price"
+                    type="text"
+                    dir="auto"
+                  />
+                </Col>
+              </Row>
+              <br />
 
-                <Row>
-                  <Col xs={6} md={2}>
-                    <ProductDescriptionLabel>
-                      Description
-                    </ProductDescriptionLabel>
-                  </Col>
-                  <Col xs={6} md={10} className="pt-form-content">
-                    <Field
-                      name="productDescription"
-                      component={this.renderTextareaField}
-                      className="pt-input"
-                      placeholder="Product description"
-                      dir="auto"
-                    />
-                  </Col>
-                </Row>
-                <br />
+              <Row>
+                <Col xs={6} md={2}>
+                  <ProductDescriptionLabel>
+                    Description
+                  </ProductDescriptionLabel>
+                </Col>
+                <Col xs={6} md={10} className="pt-form-content">
+                  <Field
+                    name="productDescription"
+                    component={this.renderTextareaField}
+                    className="pt-input"
+                    placeholder="Product description"
+                    dir="auto"
+                  />
+                </Col>
+              </Row>
+              <br />
 
-                <Row>
-                  <Col xs={6} md={2}>
-                    <ProductImageUploadLabel>
-                      Upload image
-                    </ProductImageUploadLabel>
-                  </Col>
-                  <Col xs={6} md={10} className="pt-form-content">
-                    <ProductImageUploadInput>
-                      <input type="file" />
-                      <span className="pt-file-upload-input">Choose file...</span>
-                    </ProductImageUploadInput>
-                  </Col>
-                </Row>
-                <br />
+              <Row>
+                <Col xs={6} md={2}>
+                  <ProductImageUploadLabel>
+                    Upload image
+                  </ProductImageUploadLabel>
+                </Col>
+                <Col xs={6} md={10} className="pt-form-content">
+                  <ProductImageUploadInput>
+                    <input type="file" />
+                    <span className="pt-file-upload-input">Choose file...</span>
+                  </ProductImageUploadInput>
+                </Col>
+              </Row>
+              <br />
 
-                <Row end="xs">
-                  <Col mdOffset={2} md={10} xsOffset={6} xs={6}>
-                    <SubmitButton disabled={invalid || pristine || submitting}>Add</SubmitButton>
-                  </Col>
-                </Row>
-              </form>
-            </SectionInner>
-          </Section>
-        </Grid>
-      </SectionWrapper>
+              <Row end="xs">
+                <Col mdOffset={2} md={10} xsOffset={6} xs={6}>
+                  <SubmitButton disabled={invalid || pristine || submitting}>Add</SubmitButton>
+                </Col>
+              </Row>
+            </form>
+          </SectionInner>
+        </Section>
+      </Grid>
     );
   };
 
