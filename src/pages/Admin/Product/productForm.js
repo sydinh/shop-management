@@ -53,7 +53,7 @@ const ProductImageUploadLabel = styled.label.attrs({
 })``;
 
 const ProductImageUploadInput = styled.label.attrs({
-  className: 'pt-file-upload .modifier',
+  className: 'pt-file-upload',
 })`
   width: 100%;
 `;
@@ -206,8 +206,7 @@ class ProductForm extends Component {
 };
 
 const mapStateToProps = state => {
-  const { foo, bar } = state;
-  return { foo, bar };
+  return {};
 };
 
 const mapDispatchToProps = dispatch => {

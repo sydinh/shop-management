@@ -1,52 +1,36 @@
+import 'pages/Admin/Product/productList.css';
 import React from 'react';
-import styled from 'styled-components';
-import { Grid, Row, Col } from 'react-flexbox-grid';
+import { Link } from 'react-router-dom';
+import { Icon } from '@blueprintjs/core';
 
-const Table = styled.table.attrs({
-  className: 'pt-table pt-interactive',
-})`
-  width: 100%;
-`;
+const ProductList = props => {
+  const { createdAt } = props;
+  const createdAtTime = Date(createdAt);
+  const date = new Date(createdAtTime);
+  const dateTime = `${date.getMonth() + 1} / ${date.getDate()} / ${date.getFullYear()} ${date.getHours()} : ${date.getMinutes()} : ${date.getMilliseconds()}`;
 
-const ProductList = () => (
+  return(
+    <tr>
+      <td className="text-center">{props.productNo}</td>
+      <td>{props.name}</td>
+      <td>{props.price}</td>
+      <td>{props.description}</td>
+      <td><img src={`${props.image}`} alt={`${props.name}`} /></td>
+      <td>{ dateTime }</td>
+      <td>
+        <Link to="/" role="button" className="pt-button pt-intent-primary" tabIndex="0">
+          <Icon iconName="edit" iconSize="inherit" />
+          Edit
+        </Link>
+        &nbsp;
+        <Link to="/" role="button" className="pt-button pt-intent-danger" tabIndex="0">
+          <Icon iconName="delete" iconSize="inherit" />
+          Delete
+        </Link>
+      </td>
+    </tr>
+  );
 
-  <Grid>
-    <Row>
-      <Col md={12}>
-        <Table>
-          <thead>
-            <tr>
-              <th>No</th>
-              <th>Product Name</th>
-              <th>Product Price</th>
-              <th>Product Description</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1</td>
-              <td>Blueprint</td>
-              <td>CSS framework and UI toolkit</td>
-              <td>Sass, TypeScript, React</td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>TSLint</td>
-              <td>Static analysis linter for TypeScript</td>
-              <td>TypeScript</td>
-            </tr>
-            <tr>
-              <td>3</td>
-              <td>Plottable</td>
-              <td>Composable charting library built on top of D3</td>
-              <td>SVG, TypeScript, D3</td>
-            </tr>
-          </tbody>
-        </Table>
-      </Col>
-    </Row>
-  </Grid>
-
-);
+};
 
 export default ProductList;
