@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { showProducts } from 'actions';
+import { Link } from 'react-router-dom';
+import { showProducts } from 'actions/productActions';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import { Spinner, Icon } from '@blueprintjs/core';
 import styled from 'styled-components';
-import ProductList from 'pages/Admin/Product/productList';
+import ProductItems from 'pages/Admin/Product/productItems';
 
 const AdminContainer = styled.div`
   display: flex;
@@ -21,12 +22,17 @@ const Table = styled.table.attrs({
 `;
 
 const TableData = styled.td.attrs({
-  colSpan: '6'
+  colSpan: '7'
 })``;
 
 const TableDataInner = styled.div`
   display: flex;
   justify-content: center;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
 `;
 
 class Admin extends Component {
@@ -43,7 +49,7 @@ class Admin extends Component {
 
   renderProducts = products => {
     if (products) {
-      const product = products.map((product, productNo) => <ProductList key={product.id} productNo={productNo} {...product} />);
+      const product = products.map((product, productNo) => <ProductItems key={product.id} productNo={productNo} {...product} />);
       return product;
     }
     return(
@@ -58,12 +64,23 @@ class Admin extends Component {
   }
 
   render() {
-    const products = this.props.products.products;
+    const productArr = this.props.products.products;
     return (
       <AdminContainer>
         <Grid>
           <Row>
             <Col md={12}>
+              <ButtonContainer>
+                <Link
+                  to="/"
+                  className="pt-button pt-intent-primary"
+                  role="button"
+                  tabIndex="0"
+                >
+                  <Icon iconName="add" iconSize="inherit" />
+                  Add product
+                </Link>
+              </ButtonContainer>
               <Table>
                 <thead>
                   <tr>
@@ -73,11 +90,11 @@ class Admin extends Component {
                     <th><Icon iconName="double-caret-vertical" />Product Description</th>
                     <th><Icon iconName="double-caret-vertical" />Product Image</th>
                     <th><Icon iconName="double-caret-vertical" />Created at</th>
-                    <th>Options</th>
+                    <th style={{ textAlign: 'center' }}>Options</th>
                   </tr>
                 </thead>
                 <tbody>
-                  { this.renderProducts(products) }
+                  { this.renderProducts(productArr) }
                 </tbody>
               </Table>
             </Col>

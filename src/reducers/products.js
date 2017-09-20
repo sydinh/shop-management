@@ -1,6 +1,6 @@
 import { SHOW_PRODUCTS } from 'constants/actions';
 
-const product = (state = {}, action) => {
+const products = (state = {}, action) => {
   switch (action.type) {
     case SHOW_PRODUCTS:
       return { ...state, products: action.payload };
@@ -9,4 +9,4 @@ const product = (state = {}, action) => {
   }
 };
 
-export default product;
+export default products;

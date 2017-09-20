@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { Field, reduxForm, reset } from 'redux-form';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import styled from 'styled-components';
-import { addProduct } from 'actions';
+import { addProduct } from 'actions/productActions';
 
 const Section = styled.section.attrs({
   className: props => props.product ? 'section-product' : '' ,
@@ -84,7 +84,11 @@ class ProductForm extends Component {
           type={field.type}
           dir={field.dir}
         />
-        { touched && error ? <ProductInputError><small>{error}</small></ProductInputError> : '' }
+        {
+          touched && error
+            ? <ProductInputError><small>{error}</small></ProductInputError>
+            : ''
+        }
       </div>
     );
   }
@@ -101,7 +105,11 @@ class ProductForm extends Component {
           placeholder={field.placeholder}
           dir={field.dir}
         />
-        { touched && error ? <ProductTextareaError><small>{error}</small></ProductTextareaError> : '' }
+        {
+          touched && error
+          ? <ProductTextareaError><small>{error}</small></ProductTextareaError>
+          : ''
+        }
       </div>
     );
   }
