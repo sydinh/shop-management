@@ -5,6 +5,7 @@ import store from './store';
 import Home from './pages/Home/';
 import Login from './pages/Login/';
 import Admin from './pages/Admin/';
+import ProductForm from './pages/Admin/Product/productForm';
 import NotFound from './pages/NotFound';
 import { fakeAuth } from 'fakeAuth';
 import Header from 'layouts/Header';
@@ -37,7 +38,8 @@ class App extends Component {
             <Switch>
               <Route exact path='/' component={Home} />
               <Route path='/login' component={Login} />
-              <AuthRoute path='/admin' component={Admin} />
+              <AuthRoute exact path='/admin' component={Admin} />
+              <AuthRoute path='/admin/products/add' component={ProductForm} />
               <Route component={NotFound} />
             </Switch>
           </div>

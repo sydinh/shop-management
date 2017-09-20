@@ -64,6 +64,7 @@ class Admin extends Component {
   }
 
   render() {
+    const { match } = this.props;
     const productArr = this.props.products.products;
     return (
       <AdminContainer>
@@ -72,7 +73,7 @@ class Admin extends Component {
             <Col md={12}>
               <ButtonContainer>
                 <Link
-                  to="/"
+                  to={`${match.path}/products/add`}
                   className="pt-button pt-intent-primary"
                   role="button"
                   tabIndex="0"
@@ -100,7 +101,6 @@ class Admin extends Component {
             </Col>
           </Row>
         </Grid>
-        <br />
       </AdminContainer>
     );
   }

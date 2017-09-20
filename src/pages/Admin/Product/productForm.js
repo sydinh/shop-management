@@ -10,17 +10,18 @@ import { addProduct } from 'actions/productActions';
 const Section = styled.section.attrs({
   className: props => props.product ? 'section-product' : '' ,
 })`
-  padding: 20px;
+  margin-top: 1.25rem;
+  padding: 1.25rem;
   text-align: left;
   border: 1px solid #c2c2c2;
 `;
 
 const SectionInner = styled.div`
-  margin: 20px 0;
+  margin: 1.25rem 0;
 `;
 
 const SectionHeading = styled.h2`
-  padding-bottom: 10px;
+  padding-bottom: 0.625rem;
   border-bottom: 1px solid #c2c2c2;
 `;
 
@@ -68,6 +69,11 @@ const SubmitButton = styled.button.attrs({
   className: 'pt-button pt-icon-plus',
   type: 'submit',
 })``;
+
+const SubmitSucceeded = styled.p`
+  margin-top: 10px;
+  color: #00cc00;
+`;
 
 class ProductForm extends Component {
 
@@ -121,7 +127,7 @@ class ProductForm extends Component {
   }
 
   render() {
-    const { handleSubmit, pristine, submitting, invalid } = this.props;
+    const { handleSubmit, pristine, submitting, invalid, submitSucceeded } = this.props;
     return(
       <Grid>
         <Section product>
@@ -202,6 +208,11 @@ class ProductForm extends Component {
               <Row end="xs">
                 <Col mdOffset={2} md={10} xsOffset={6} xs={6}>
                   <SubmitButton disabled={invalid || pristine || submitting}>Add</SubmitButton>
+                  {
+                    submitSucceeded
+                      ? <SubmitSucceeded>Add product successfully!</SubmitSucceeded>
+                      : ''
+                  }
                 </Col>
               </Row>
             </form>
