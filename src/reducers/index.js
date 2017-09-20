@@ -1,18 +1,10 @@
 import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
-
-const foo = (state = {}, action) => {
-  return state;
-};
-
-const bar = (state = {}, action) => {
-  return state;
-};
+import products from 'reducers/products';
 
 const rootReducer = combineReducers({
+  products,
   form: formReducer,
-  foo,
-  bar,
 });
 
 export default rootReducer;

@@ -5,11 +5,7 @@ import { connect } from 'react-redux';
 import { Field, reduxForm, reset } from 'redux-form';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import styled from 'styled-components';
-import { addProduct } from 'actions';
-
-const SectionWrapper = styled.div.attrs({
-  className: 'container'
-})``;
+import { addProduct } from 'actions/productActions';
 
 const Section = styled.section.attrs({
   className: props => props.product ? 'section-product' : '' ,
@@ -57,7 +53,7 @@ const ProductImageUploadLabel = styled.label.attrs({
 })``;
 
 const ProductImageUploadInput = styled.label.attrs({
-  className: 'pt-file-upload .modifier',
+  className: 'pt-file-upload',
 })`
   width: 100%;
 `;
@@ -76,7 +72,8 @@ const SubmitButton = styled.button.attrs({
 class ProductForm extends Component {
 
   renderInputField = field => {
-    const className = `${field.className} ${field.meta.touched && field.meta.error ? 'input-error' : ''} `;
+    const { touched, error } = field.meta;
+    const className = `${field.className} ${touched && error ? 'input-error' : ''}`;
     return(
       <div>
         <ProductInput
@@ -87,13 +84,18 @@ class ProductForm extends Component {
           type={field.type}
           dir={field.dir}
         />
-        {field.meta.touched && field.meta.error ? <ProductInputError><small>{field.meta.error}</small></ProductInputError> : ''}
+        {
+          touched && error
+            ? <ProductInputError><small>{error}</small></ProductInputError>
+            : ''
+        }
       </div>
     );
   }
 
   renderTextareaField = field => {
-    const className = `${field.className} ${field.meta.touched && field.meta.error ? 'input-error' : ''} `;
+    const { touched, error } = field.meta;
+    const className = `${field.className} ${touched && error ? 'input-error' : ''}`;
     return(
       <div>
         <ProductTextarea
@@ -103,7 +105,11 @@ class ProductForm extends Component {
           placeholder={field.placeholder}
           dir={field.dir}
         />
-        {field.meta.touched && field.meta.error ? <ProductTextareaError><small>{field.meta.error}</small></ProductTextareaError> : ''}
+        {
+          touched && error
+          ? <ProductTextareaError><small>{error}</small></ProductTextareaError>
+          : ''
+        }
       </div>
     );
   }
@@ -117,101 +123,98 @@ class ProductForm extends Component {
   render() {
     const { handleSubmit, pristine, submitting, invalid } = this.props;
     return(
-      <SectionWrapper>
-        <Grid fluid>
-          <Section product>
-            <SectionHeading>Add product</SectionHeading>
-            <SectionInner>
-              <form onSubmit={handleSubmit(this.onSubmit)}>
-                <Row>
-                  <Col xs={6} md={2}>
-                    <ProductNameLabel>
-                      Name
-                    </ProductNameLabel>
-                  </Col>
-                  <Col xs={6} md={10} className="pt-form-content">
-                    <Field
-                      name="productName"
-                      component={this.renderInputField}
-                      className="pt-input"
-                      placeholder="Product name"
-                      type="text"
-                      dir="auto"
-                    />
-                  </Col>
-                </Row>
-                <br />
+      <Grid>
+        <Section product>
+          <SectionHeading>Add product</SectionHeading>
+          <SectionInner>
+            <form onSubmit={handleSubmit(this.onSubmit)}>
+              <Row>
+                <Col xs={6} md={2}>
+                  <ProductNameLabel>
+                    Name
+                  </ProductNameLabel>
+                </Col>
+                <Col xs={6} md={10} className="pt-form-content">
+                  <Field
+                    name="productName"
+                    component={this.renderInputField}
+                    className="pt-input"
+                    placeholder="Product name"
+                    type="text"
+                    dir="auto"
+                  />
+                </Col>
+              </Row>
+              <br />
 
-                <Row>
-                  <Col xs={6} md={2}>
-                    <ProductPriceLabel>
-                      Price
-                    </ProductPriceLabel>
-                  </Col>
-                  <Col xs={6} md={10} className="pt-form-content">
-                    <Field
-                      name="productPrice"
-                      component={this.renderInputField}
-                      className="pt-input"
-                      placeholder="Product price"
-                      type="text"
-                      dir="auto"
-                    />
-                  </Col>
-                </Row>
-                <br />
+              <Row>
+                <Col xs={6} md={2}>
+                  <ProductPriceLabel>
+                    Price
+                  </ProductPriceLabel>
+                </Col>
+                <Col xs={6} md={10} className="pt-form-content">
+                  <Field
+                    name="productPrice"
+                    component={this.renderInputField}
+                    className="pt-input"
+                    placeholder="Product price"
+                    type="text"
+                    dir="auto"
+                  />
+                </Col>
+              </Row>
+              <br />
 
-                <Row>
-                  <Col xs={6} md={2}>
-                    <ProductDescriptionLabel>
-                      Description
-                    </ProductDescriptionLabel>
-                  </Col>
-                  <Col xs={6} md={10} className="pt-form-content">
-                    <Field
-                      name="productDescription"
-                      component={this.renderTextareaField}
-                      className="pt-input"
-                      placeholder="Product description"
-                      dir="auto"
-                    />
-                  </Col>
-                </Row>
-                <br />
+              <Row>
+                <Col xs={6} md={2}>
+                  <ProductDescriptionLabel>
+                    Description
+                  </ProductDescriptionLabel>
+                </Col>
+                <Col xs={6} md={10} className="pt-form-content">
+                  <Field
+                    name="productDescription"
+                    component={this.renderTextareaField}
+                    className="pt-input"
+                    placeholder="Product description"
+                    dir="auto"
+                  />
+                </Col>
+              </Row>
+              <br />
 
-                <Row>
-                  <Col xs={6} md={2}>
-                    <ProductImageUploadLabel>
-                      Upload image
-                    </ProductImageUploadLabel>
-                  </Col>
-                  <Col xs={6} md={10} className="pt-form-content">
-                    <ProductImageUploadInput>
-                      <input type="file" />
-                      <span className="pt-file-upload-input">Choose file...</span>
-                    </ProductImageUploadInput>
-                  </Col>
-                </Row>
-                <br />
+              <Row>
+                <Col xs={6} md={2}>
+                  <ProductImageUploadLabel>
+                    Upload image
+                  </ProductImageUploadLabel>
+                </Col>
+                <Col xs={6} md={10} className="pt-form-content">
+                  <ProductImageUploadInput>
+                    <input type="file" />
+                    <span className="pt-file-upload-input">Choose file...</span>
+                  </ProductImageUploadInput>
+                </Col>
+              </Row>
+              <br />
 
-                <Row end="xs">
-                  <Col mdOffset={2} md={10} xsOffset={6} xs={6}>
-                    <SubmitButton disabled={invalid || pristine || submitting}>Add</SubmitButton>
-                  </Col>
-                </Row>
-              </form>
-            </SectionInner>
-          </Section>
-        </Grid>
-      </SectionWrapper>
+              <Row end="xs">
+                <Col mdOffset={2} md={10} xsOffset={6} xs={6}>
+                  <SubmitButton disabled={invalid || pristine || submitting}>Add</SubmitButton>
+                </Col>
+              </Row>
+            </form>
+          </SectionInner>
+        </Section>
+      </Grid>
     );
   };
 
 };
 
 const mapStateToProps = state => {
-  const { foo, bar } = state;
-  return { foo, bar };
+  return {};
 };
 
 const mapDispatchToProps = dispatch => {
@@ -223,29 +226,28 @@ const mapDispatchToProps = dispatch => {
 
 const validate = values => {
   const errors = {};
-
-  if (!values.productName) {
+  const { productName, productPrice, productDescription } = values;
+  if (!productName) {
     errors.productName = 'Required';
-  } else if (values.productName.length > 15) {
+  } else if (productName.length > 15) {
     errors.productName = 'Must be 15 characters or less';
-  } else if (values.productName.length < 5) {
+  } else if (productName.length < 5) {
     errors.productName = 'Must be 5 characters or more';
-  } else if (!isNaN(Number(values.productName))) {
-    errors.productName = 'Must be a string or string and number';
+  } else if (!isNaN(Number(productName))) {
+    errors.productName = 'Must be a string';
   };
 
-  if (!values.productPrice) {
+  if (!productPrice) {
     errors.productPrice = 'Required';
-  } else if (!/^[0-9]*$/.test(values.productPrice)) {
-    errors.productPrice = 'Price must be number';
+  } else if (!/^[0-9]*$/.test(productPrice)) {
+    errors.productPrice = 'Must be number';
   };
 
-  if (!values.productDescription) {
+  if (!productDescription) {
     errors.productDescription = 'Required';
-  } else if (values.productDescription.length < 8) {
+  } else if (productDescription.length < 8) {
     errors.productDescription = 'Must be 8 characters or more';
-  }
-
+  };
   return errors;
 };
 
@@ -254,8 +256,8 @@ const createReduxForm = reduxForm({
   validate,
 });
 
-const createConnect = connect(mapStateToProps, mapDispatchToProps)(ProductForm);
+const createConnection = connect(mapStateToProps, mapDispatchToProps)(ProductForm);
 
-const ProductFormContainer = createReduxForm(createConnect)
+const ProductFormContainer = createReduxForm(createConnection);
 
 export default ProductFormContainer;

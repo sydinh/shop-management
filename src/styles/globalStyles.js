@@ -96,4 +96,9 @@ injectGlobal`
     // Navbar fixed
     padding-top: 50px;
   }
+
+  table.pt-table td.text-center {
+    text-align: center;
+  }
+
 `;
