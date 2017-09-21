@@ -5,6 +5,11 @@
 + Run `npm install` or `yarn`
 + Run `npm start` or `yarn start` for develop
 
+### Deployment
+
++ Run `npm install --global surge` or `yarn global add surge`
++ Run `npm run deploy` or `yarn run deploy`
+
 ### Built with tech stacks
 
 + React
