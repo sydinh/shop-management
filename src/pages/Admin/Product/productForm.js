@@ -1,4 +1,4 @@
-import 'pages/Admin/Product/productForm.css';
+import './productForm.css';
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';

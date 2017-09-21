@@ -6,7 +6,7 @@ import { showProducts } from 'actions/productActions';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import { Spinner, Icon } from '@blueprintjs/core';
 import styled from 'styled-components';
-import ProductItems from 'pages/Admin/Product/productItems';
+import ProductItems from './Product/productItems';
 
 const AdminContainer = styled.div`
   display: flex;

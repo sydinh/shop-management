@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Icon } from '@blueprintjs/core';
 import styled from 'styled-components';
+import { FormatDate } from 'helpers/FormatDate';
 
 const Img = styled.img`
   max-width: 100px;
@@ -11,9 +12,6 @@ const Img = styled.img`
 
 const ProductItems = props => {
   const { createdAt } = props;
-  const createdAtTime = Date(createdAt);
-  const date = new Date(createdAtTime);
-  const dateTime = `${date.getMonth() + 1} / ${date.getDate()} / ${date.getFullYear()}`;
 
   return(
     <tr>
@@ -28,7 +26,7 @@ const ProductItems = props => {
             : <p>No image</p>
         }
       </td>
-      <td>{ dateTime }</td>
+      <td>{ FormatDate(createdAt) }</td>
       <td className="text-center">
         <Link
           to="/"
