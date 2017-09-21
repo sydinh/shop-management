@@ -16,7 +16,7 @@ const AdminContainer = styled.div`
 `;
 
 const Table = styled.table.attrs({
-  className: 'pt-table pt-interactive',
+  className: 'pt-table pt-striped pt-interactive',
 })`
   width: 100%;
 `;

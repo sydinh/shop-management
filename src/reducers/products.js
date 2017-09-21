@@ -1,6 +1,6 @@
 import {
   ADD_PRODUCT,
-  SHOW_PRODUCTS
+  SHOW_PRODUCTS,
 } from 'constants/actions';
 
 const products = (state = {}, action) => {

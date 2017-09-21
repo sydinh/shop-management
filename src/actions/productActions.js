@@ -1,9 +1,14 @@
 import axios from 'axios';
+import API_URL_BASE from 'APIClient/HTTPClient';
 import {
   ADD_PRODUCT,
   SHOW_PRODUCTS
 } from 'constants/actions';
-import API_URL_BASE from 'APIClient/HTTPClient';
+import { showNotificationFromToaster } from 'helpers/Toaster';
+import {
+  TOAST_SUCCESSFUL as successful,
+  TOAST_FAILED as failed
+} from 'constants/toasters';
 
 export const addProductSuccess = data => {
   const action = {
@@ -21,17 +26,24 @@ export const addProductFailure = error => {
 export const addProduct = data => {
   return dispatch => {
     const { productName, productPrice, productDescription } = data;
+    const productPriceParsed = parseInt(productPrice, 10);
     axios({
       method: 'post',
       url: `${API_URL_BASE}/products`,
       data: {
         name: productName,
-        price: Number(productPrice),
+        price: productPriceParsed,
         description: productDescription,
       },
     })
-    .then(response => dispatch(addProductSuccess(response.data)))
-    .catch(error => dispatch(addProductFailure(error)));
+    .then(response => {
+      dispatch(addProductSuccess(response.data));
+      showNotificationFromToaster(`${productName} added successful`, successful);
+    })
+    .catch(errors => {
+      dispatch(addProductFailure(errors.response));
+      showNotificationFromToaster('Add failed', failed);
+    });
   };
 };
 

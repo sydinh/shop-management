@@ -3,7 +3,9 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Field, reduxForm, reset } from 'redux-form';
+import { Link } from 'react-router-dom';
 import { Grid, Row, Col } from 'react-flexbox-grid';
+import { Icon } from '@blueprintjs/core';
 import styled from 'styled-components';
 import { addProduct } from 'actions/productActions';
 
@@ -70,9 +72,8 @@ const SubmitButton = styled.button.attrs({
   type: 'submit',
 })``;
 
-const SubmitSucceeded = styled.p`
-  margin-top: 10px;
-  color: #00cc00;
+const ButtonContainer = styled.div`
+  margin-top: 0.625rem;
 `;
 
 class ProductForm extends Component {
@@ -127,11 +128,15 @@ class ProductForm extends Component {
   }
 
   render() {
-    const { handleSubmit, pristine, submitting, invalid, submitSucceeded } = this.props;
+    const { handleSubmit, pristine, submitting, invalid } = this.props;
     return(
       <Grid>
         <Section product>
-          <SectionHeading>Add product</SectionHeading>
+          <SectionHeading>
+            <Icon iconName="add-to-artifact" iconSize="inherit" />
+            &nbsp;
+            Add product
+          </SectionHeading>
           <SectionInner>
             <form onSubmit={handleSubmit(this.onSubmit)}>
               <Row>
@@ -208,16 +213,22 @@ class ProductForm extends Component {
               <Row end="xs">
                 <Col mdOffset={2} md={10} xsOffset={6} xs={6}>
                   <SubmitButton disabled={invalid || pristine || submitting}>Add</SubmitButton>
-                  {
-                    submitSucceeded
-                      ? <SubmitSucceeded>Add product successfully!</SubmitSucceeded>
-                      : ''
-                  }
                 </Col>
               </Row>
             </form>
           </SectionInner>
         </Section>
+        <ButtonContainer>
+          <Link
+            to="/admin"
+            className="pt-button pt-intent-primary"
+            role="button"
+            tabIndex="0"
+          >
+            <Icon iconName="fast-backward" iconSize="inherit" />
+            Back
+          </Link>
+        </ButtonContainer>
       </Grid>
     );
   };
