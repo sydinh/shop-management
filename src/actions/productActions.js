@@ -9,6 +9,7 @@ import {
   TOAST_SUCCESSFUL as successful,
   TOAST_FAILED as failed
 } from 'constants/toasters';
+import { firstToUpperCase } from 'helpers/FormatString';
 
 export const addProductSuccess = data => {
   const action = {
@@ -26,14 +27,16 @@ export const addProductFailure = error => {
 export const addProduct = data => {
   return dispatch => {
     const { productName, productPrice, productDescription } = data;
-    const productPriceParsed = parseInt(productPrice, 10);
+    const productNameWithUpercaseFirstLetter = firstToUpperCase(productName);
+    const productDescriptionWithUpercaseFirstLetter = firstToUpperCase(productDescription);
+    const productPriceParsedToInt = parseInt(productPrice, 10);
     axios({
       method: 'post',
       url: `${API_URL_BASE}/products`,
       data: {
-        name: productName,
-        price: productPriceParsed,
-        description: productDescription,
+        name: productNameWithUpercaseFirstLetter,
+        price: productPriceParsedToInt,
+        description: productDescriptionWithUpercaseFirstLetter,
       },
     })
     .then(response => {
