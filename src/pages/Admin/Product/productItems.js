@@ -10,6 +10,11 @@ const Img = styled.img`
   height: auto;
 `;
 
+const TableData = styled.td`
+  width: 20rem;
+  word-break: break-all;
+`;
+
 const ProductItems = props => {
   const { createdAt } = props;
 
@@ -18,7 +23,7 @@ const ProductItems = props => {
       <td className="text-center">{ props.productNo + 1 }</td>
       <td>{props.name}</td>
       <td>{props.price}</td>
-      <td>{props.description}</td>
+      <TableData>{props.description}</TableData>
       <td>
         {
           props.image

@@ -2,6 +2,7 @@ import axios from 'axios';
 import API_URL_BASE from 'APIClient/HTTPClient';
 import {
   ADD_PRODUCT,
+  FETCHING_PRODUCTS,
   SHOW_PRODUCTS
 } from 'constants/actions';
 import { showNotificationFromToaster } from 'helpers/Toaster';
@@ -58,6 +59,12 @@ export const fetchProducts = () => {
   return request;
 };
 
+export const fetchingProducts = () => {
+  return {
+    type: FETCHING_PRODUCTS,
+  };
+};
+
 export const fetchProductsSuccess = data => {
   const action = {
     type: SHOW_PRODUCTS,
@@ -73,6 +80,7 @@ export const fetchProductsFailure = error => {
 
 export const showProducts = () => {
   return dispatch => {
+    dispatch(fetchingProducts());
     return fetchProducts()
     .then(response => dispatch(fetchProductsSuccess(response.data)))
     .catch(error => dispatch(fetchProductsFailure(error)));

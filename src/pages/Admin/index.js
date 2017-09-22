@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { showProducts } from 'actions/productActions';
@@ -19,6 +18,10 @@ const Table = styled.table.attrs({
   className: 'pt-table pt-striped pt-interactive',
 })`
   width: 100%;
+`;
+
+const TableHeaderCell = styled.th`
+  width: 20rem;
 `;
 
 const TableData = styled.td.attrs({
@@ -41,34 +44,9 @@ class Admin extends Component {
     this.props.showProducts();
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (!nextProps.products) {
-      this.props.showProducts();
-    }
-  }
-
-  renderProducts = products => {
-    if (!products) {
-      return null;
-    } else if (!products.length) {
-      return(
-        <tr>
-          <TableData>
-            <TableDataInner>
-              <Spinner className="pt-small pt-intent-success" />
-            </TableDataInner>
-          </TableData>
-        </tr>
-        );
-    } else {
-      const product = products.map((product, productNo) => <ProductItems key={product.id} productNo={productNo} {...product} />);
-      return product;
-    }
-  }
-
   render() {
     const { match } = this.props;
-    const productArr = this.props.products.products;
+    const { isFetchingProducts, productList } = this.props.product;
     return (
       <AdminContainer>
         <Grid>
@@ -91,14 +69,27 @@ class Admin extends Component {
                     <th><Icon iconName="double-caret-vertical" />No</th>
                     <th><Icon iconName="double-caret-vertical" />Product Name</th>
                     <th><Icon iconName="double-caret-vertical" />Product Price</th>
-                    <th><Icon iconName="double-caret-vertical" />Product Description</th>
+                    <TableHeaderCell><Icon iconName="double-caret-vertical" />Product Description</TableHeaderCell>
                     <th><Icon iconName="double-caret-vertical" />Product Image</th>
                     <th><Icon iconName="double-caret-vertical" />Created at</th>
                     <th style={{ textAlign: 'center' }}>Options</th>
                   </tr>
                 </thead>
                 <tbody>
-                  { this.renderProducts(productArr) }
+                  {
+                    isFetchingProducts &&
+                      <tr>
+                        <TableData>
+                          <TableDataInner>
+                            <Spinner className="pt-small pt-intent-success" />
+                          </TableDataInner>
+                        </TableData>
+                      </tr>
+                  }
+                  {
+                    productList.length > 0 && productList.map((product, productNo) =>
+                      <ProductItems key={product.id} productNo={productNo} {...product} />)
+                  }
                 </tbody>
               </Table>
             </Col>
@@ -111,17 +102,13 @@ class Admin extends Component {
 };
 
 const mapStateToProps = state => {
-  const { products } = state;
   return {
-    products,
+    product: state.product,
   };
 };
 
-const mapDispatchToProps = dispatch => {
-  const action = bindActionCreators({
-    showProducts,
-  }, dispatch);
-  return action;
+const mapDispatchToProps = {
+  showProducts,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Admin);
