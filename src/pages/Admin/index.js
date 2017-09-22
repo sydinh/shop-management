@@ -48,19 +48,22 @@ class Admin extends Component {
   }
 
   renderProducts = products => {
-    if (products) {
+    if (!products) {
+      return null;
+    } else if (!products.length) {
+      return(
+        <tr>
+          <TableData>
+            <TableDataInner>
+              <Spinner className="pt-small pt-intent-success" />
+            </TableDataInner>
+          </TableData>
+        </tr>
+        );
+    } else {
       const product = products.map((product, productNo) => <ProductItems key={product.id} productNo={productNo} {...product} />);
       return product;
     }
-    return(
-      <tr>
-        <TableData>
-          <TableDataInner>
-            <Spinner className="pt-small pt-intent-success" />
-          </TableDataInner>
-        </TableData>
-      </tr>
-    );
   }
 
   render() {
