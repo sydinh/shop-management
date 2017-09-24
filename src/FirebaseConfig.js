@@ -8,8 +8,12 @@ const config = {
   storageBucket: "shop-management-ba749.appspot.com",
   messagingSenderId: "791773433267"
 };
-firebase.initializeApp(config);
 
-export const auth = firebase.auth();
+export const firebaseApp = firebase.initializeApp(config);
+export const firebaseAuth = firebaseApp.auth();
 
-export default firebase;
+export const storageKey = 'KEY_FOR_LOCAL_STORAGE';
+
+export const isAuthenticated = () => {
+  return !!firebaseAuth.currentUser || !!localStorage.getItem(storageKey);
+}

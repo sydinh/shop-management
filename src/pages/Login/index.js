@@ -4,18 +4,15 @@ import { Redirect } from 'react-router-dom';
 import {
   Button,
 } from '@blueprintjs/core';
-import { auth } from '../../Firebase';
-import { AuthStore } from 'LocalStorage';
+import { firebaseAuth } from 'FirebaseConfig';
 
 const LoginContainer = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 50px;
 `;
-
 const LoginBox = styled.div`
   width: 400px;
-
   form {
     padding: 10px 20px;
   }
@@ -29,7 +26,6 @@ class Login extends React.Component {
       loading: false,
       email: '',
       password: '',
-      user: null,
       error: null,
     }
     this.login = this.login.bind(this);
@@ -44,15 +40,14 @@ class Login extends React.Component {
     this.setState({
       loading: true,
     });
-    auth.signInWithEmailAndPassword(email, password)
+
+    firebaseAuth.signInWithEmailAndPassword(email, password)
       .then(user => {
         this.setState({
           error: null,
           loading: false,
-          user: user.email,
+          redirectToReferrer: true,
         });
-
-        AuthStore.setData(user.email);
       })
       .catch(error => {
         this.setState({
@@ -73,9 +68,13 @@ class Login extends React.Component {
   }
 
   render() {
-    if (AuthStore.isAuthenticated()) {
-      console.log('Logged');
-      return <Redirect to='/admin' />;
+    const { from } = this.props.location.state || { from: { pathname: '/' } }
+    const { redirectToReferrer } = this.state;
+
+    if (redirectToReferrer) {
+      return (
+        <Redirect to={from} />
+      )
     }
 
     return (
