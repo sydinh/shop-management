@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import { fakeAuth } from 'fakeAuth';
 import { Redirect } from 'react-router-dom';
 import {
   Button,
 } from '@blueprintjs/core';
-import firebase, { auth } from '../../Firebase';
+import { auth } from '../../Firebase';
+import { AuthStore } from 'LocalStorage';
 
 const LoginContainer = styled.div`
   display: flex;
@@ -39,22 +39,20 @@ class Login extends React.Component {
 
   login(e) {
     e.preventDefault();
-    this.setState({ loading: true });
-    // fakeAuth.authenticate(() => {
-    //   this.setState({
-    //     redirectToReferrer: true,
-    //     loading: false,
-    //     username: '',
-    //     password: '',
-    //   });
-    // })
-    firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
+    const { email, password } = this.state;
+
+    this.setState({
+      loading: true,
+    });
+    auth.signInWithEmailAndPassword(email, password)
       .then(user => {
         this.setState({
           error: null,
           loading: false,
           user: user.email,
         });
+
+        AuthStore.setData(user.email);
       })
       .catch(error => {
         this.setState({
@@ -75,13 +73,9 @@ class Login extends React.Component {
   }
 
   render() {
-    const { from } = this.props.location.state || { from: { pathname: '/' } }
-    const { redirectToReferrer } = this.state
-
-    if (redirectToReferrer) {
-      return (
-        <Redirect to={from}/>
-      )
+    if (AuthStore.isAuthenticated()) {
+      console.log('Logged');
+      return <Redirect to='/admin' />;
     }
 
     return (

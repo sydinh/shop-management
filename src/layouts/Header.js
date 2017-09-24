@@ -8,7 +8,7 @@ import {
   Popover,
   Position,
 } from '@blueprintjs/core';
-import { fakeAuth } from 'fakeAuth';
+import { AuthStore } from 'LocalStorage';
 
 class Header extends React.Component {
   constructor() {
@@ -17,9 +17,9 @@ class Header extends React.Component {
   }
 
   logout() {
-    fakeAuth.signout(() => {
-      this.props.history.push('/')
-    })
+    // fakeAuth.signout(() => {
+    //   this.props.history.push('/')
+    // })
   }
 
   render() {
@@ -38,7 +38,7 @@ class Header extends React.Component {
             </div>
           </div>
           <div className='pt-navbar-group pt-align-right'>
-            {fakeAuth.isAuthenticated &&
+            {AuthStore.isAuthenticated() &&
               <div className='pt-button-group pt-minimal'>
                 <Button text='Hà Hữu Tín' />
                 <Popover content={subMenu} position={Position.BOTTOM_RIGHT}>
@@ -46,7 +46,7 @@ class Header extends React.Component {
                 </Popover>
               </div>
             }
-            {!fakeAuth.isAuthenticated &&
+            {!AuthStore.isAuthenticated() &&
               <Link to='/login' className='pt-button pt-intent-success pt-icon-log-in'>Login</Link>
             }
           </div>

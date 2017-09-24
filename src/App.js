@@ -6,28 +6,22 @@ import Home from './pages/Home/';
 import Login from './pages/Login/';
 import Admin from './pages/Admin/';
 import NotFound from './pages/NotFound';
-import { fakeAuth } from 'fakeAuth';
 import Header from 'layouts/Header';
+import { AuthStore } from 'LocalStorage';
 import 'styles/globalStyles';
 
 const AuthRoute = ({ component: Component, ...rest }) => {
   return (
-    <Route
-      {...rest}
-      render={props => (
-        fakeAuth.isAuthenticated
+    <Route {...rest} render={props => (
+      AuthStore.isAuthenticated()
         ? <Component {...props} />
-        : <Redirect to={{
-            pathname: '/login',
-            state: { from: props.location }
-          }}/>
+        : <Redirect to='/login' />
       )}
     />
   );
 };
 
 class App extends Component {
-
   render() {
     return (
       <Provider store={store}>
