@@ -1,95 +1,133 @@
-import './productForm.css';
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { Field, reduxForm, initialize as setInitialValues } from 'redux-form';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import { Icon } from '@blueprintjs/core';
-import styled from 'styled-components';
 import { getProductDetail } from 'actions/productActions';
-
-
-const Section = styled.section.attrs({
-  className: props => props.product ? 'section-product' : '' ,
-})`
-  width: 50%;
-  margin: 1.25rem auto 0 auto;
-  padding: 1.25rem;
-  text-align: left;
-  border: 1px solid #c2c2c2;
-`;
-
-const SectionInner = styled.div`
-  margin: 1.25rem 0;
-`;
-
-const SectionHeading = styled.h2`
-  padding-bottom: 0.625rem;
-  border-bottom: 1px solid #c2c2c2;
-`;
-
-const ProductNameLabel = styled.label.attrs({
-  className: 'pt-label',
-  htmlFor: '',
-})``;
-
-const ProductPriceLabel = styled.label.attrs({
-  className: 'pt-label',
-  htmlFor: '',
-})``;
-
-const ProductDescriptionLabel = styled.label.attrs({
-  className: 'pt-label',
-  htmlFor: '',
-})``;
-
-const ProductInput = styled.input`
-  width: 100%;
-`;
-
-const ProductTextarea = styled.textarea`
-  width: 100%;
-`;
-
-const SubmitButton = styled.button.attrs({
-  className: 'pt-button pt-intent-primary',
-  type: 'submit',
-})``;
-
-const ButtonContainer = styled.div`
-  margin-top: 0.625rem;
-`;
+import { updateProduct } from 'dispatchers/productDispatcher';
+import { OurToaster } from 'helpers/Toaster';
+import SectionHeading from './Components/SectionHeading';
+import Label from './Components/Label';
+import ErrorNotification from './Components/ErrorNotification';
+import BackLink from './Components/BackLink';
+import validate from './helpers/productFormValidation';
+import {
+  Section,
+  SectionInner,
+  ProductInput,
+  ProductTextarea,
+  SubmitButton,
+  ResetButton,
+  ButtonContainer
+} from './Styles/Styled';
 
 class ProductUpdate extends Component {
 
   componentWillMount() {
+    const { productList, getProductDetail, history } = this.props;
     const { productId } = this.props.match.params;
-    this.props.getProductDetail(productId)
+    const index = productList.map(product => product.id).indexOf(productId);
+    const product = this.props.productList[index];
+
+    getProductDetail(product);
+
+    if (productList.length === 0) {
+      history.push('/admin');
+      return;
+    }
+
+    if (product) {
+      this.props.dispatch(setInitialValues('updateProductForm', {
+        productName: product.name,
+        productPrice: product.price,
+        productDescription: product.description,
+      }));
+    }
+  }
+
+  componentWillUnmount() {
+    OurToaster.clear();
+  }
+
+  renderInputField = fields => {
+    const { touched, error } = fields.meta;
+    const className = `${fields.className} ${touched && error ? 'pt-intent-danger' : ''}`;
+    return(
+      <div>
+        <ProductInput
+          {...fields.input}
+          type={fields.type || 'text'}
+          className={className}
+          placeholder={fields.placeholder}
+          dir={fields.dir}
+        />
+        {
+          touched && error
+            ? <ErrorNotification text={error} />
+            : ''
+        }
+      </div>
+    );
+  }
+
+  renderTextareaField = fields => {
+    const { touched, error } = fields.meta;
+    const className = `${fields.className} ${touched && error ? 'pt-intent-danger' : ''}`;
+    return(
+      <div>
+        <ProductTextarea
+          {...fields.input}
+          className={className}
+          placeholder={fields.placeholder}
+          dir={fields.dir}
+        />
+        {
+          touched && error
+            ? <ErrorNotification text={error} />
+            : ''
+        }
+      </div>
+    );
+  }
+
+  onSubmit = data => {
+    const { updateProduct, dispatch } = this.props;
+    const { productId } = this.props.match.params;
+
+    updateProduct(data, productId);
+    dispatch(setInitialValues('updateProductForm', {
+      productName: data.productName,
+      productPrice: data.productPrice,
+      productDescription: data.productDescription,
+    }));
+    OurToaster.update(OurToaster.clear(), {});
+  }
+
+  resetForm = () => {
+    const { dispatch } = this.props;
+    dispatch(setInitialValues('updateProductForm', {}));
   }
 
   render() {
+    const { pristine, invalid, submitting } = this.props;
     return(
       <Grid>
         <Section product>
-          <SectionHeading>
-            <Icon iconName="automatic-updates" iconSize="inherit" />
-            &nbsp;
-            Edit product
-          </SectionHeading>
+          <SectionHeading icon='automatic-updates' text='Edit product' />
           <SectionInner>
-            <form>
+            <form onSubmit={this.props.handleSubmit(this.onSubmit)}>
               <Row>
                 <Col xs={6} md={2}>
-                  <ProductNameLabel>
-                    Name
-                  </ProductNameLabel>
+                  <Label text='Name' />
                 </Col>
-                <Col xs={6} md={10} className="pt-form-content">
-                  <ProductInput
-                    name="productName"
-                    className="pt-input"
-                    placeholder="Product name"
-                    type="text"
-                    dir="auto"
+                <Col xs={6} md={10} className='pt-form-content'>
+                  <Field
+                    name='productName'
+                    component={this.renderInputField}
+                    type='text'
+                    className='pt-input'
+                    placeholder='Product Name'
+                    dir='auto'
                   />
                 </Col>
               </Row>
@@ -97,17 +135,16 @@ class ProductUpdate extends Component {
 
               <Row>
                 <Col xs={6} md={2}>
-                  <ProductPriceLabel>
-                    Price
-                  </ProductPriceLabel>
+                  <Label text='Price' />
                 </Col>
-                <Col xs={6} md={10} className="pt-form-content">
-                  <ProductInput
-                    name="productPrice"
-                    className="pt-input"
-                    placeholder="Product price"
-                    type="text"
-                    dir="auto"
+                <Col xs={6} md={10} className='pt-form-content'>
+                  <Field
+                    name='productPrice'
+                    component={this.renderInputField}
+                    type='text'
+                    className='pt-input'
+                    placeholder='Product Price'
+                    dir='auto'
                   />
                 </Col>
               </Row>
@@ -115,25 +152,29 @@ class ProductUpdate extends Component {
 
               <Row>
                 <Col xs={6} md={2}>
-                  <ProductDescriptionLabel>
-                    Description
-                  </ProductDescriptionLabel>
+                  <Label text='Description' />
                 </Col>
-                <Col xs={6} md={10} className="pt-form-content">
-                  <ProductTextarea
-                    name="productDescription"
-                    className="pt-input"
-                    placeholder="Product description"
-                    dir="auto"
+                <Col xs={6} md={10} className='pt-form-content'>
+                  <Field
+                    name='productDescription'
+                    component={this.renderTextareaField}
+                    className='pt-input'
+                    placeholder='Product Description'
+                    dir='auto'
                   />
                 </Col>
               </Row>
               <br />
 
-              <Row end="xs">
+              <Row end='xs'>
                 <Col mdOffset={2} md={10} xsOffset={6} xs={6}>
-                  <SubmitButton>
-                    <Icon iconName="saved" iconSize="inherit" />
+                  <ResetButton onClick={this.resetForm} disabled={pristine || submitting}>
+                    <Icon iconName='remove' iconSize='inherit' />
+                    Clear
+                  </ResetButton>
+                  &nbsp;
+                  <SubmitButton disabled={pristine || invalid || submitting}>
+                    <Icon iconName='saved' iconSize='inherit' />
                     Save
                   </SubmitButton>
                 </Col>
@@ -141,15 +182,7 @@ class ProductUpdate extends Component {
             </form>
           </SectionInner>
           <ButtonContainer>
-            <Link
-              to="/admin"
-              className="pt-button"
-              role="button"
-              tabIndex="0"
-            >
-              <Icon iconName="fast-backward" iconSize="inherit" />
-              Back
-            </Link>
+            <BackLink />
           </ButtonContainer>
         </Section>
       </Grid>
@@ -159,10 +192,24 @@ class ProductUpdate extends Component {
 };
 
 const mapStateToProps = state => {
-  console.log(state);
   return {
-
-  }
+    productList: state.product.productList,
+    initialValues: state.product.productDetail,
+  };
 };
 
-export default connect(mapStateToProps, { getProductDetail })(ProductUpdate);
+const mapDispatchToProps = {
+  getProductDetail,
+  updateProduct
+};
+
+const createConnection = connect(mapStateToProps, mapDispatchToProps)(ProductUpdate);
+
+const createReduxForm = reduxForm({
+  form: 'updateProductForm',
+  validate
+});
+
+const productUpdateContainer = createReduxForm(createConnection);
+
+export default productUpdateContainer;

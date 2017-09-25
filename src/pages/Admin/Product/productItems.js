@@ -26,7 +26,7 @@ const ProductItems = props => {
   const { createdAt } = props;
   return(
     <tr>
-      <TableData className="text-center">{ props.productNo + 1 }</TableData>
+      <TableData className='text-center'>{ props.productNo + 1 }</TableData>
       <TableData>{props.name}</TableData>
       <PriceTableData>{props.price}</PriceTableData>
       <DescriptionTableData>{props.description}</DescriptionTableData>
@@ -38,24 +38,24 @@ const ProductItems = props => {
         }
       </TableData>
       <TableData>{ formatDate(createdAt) }</TableData>
-      <TableData className="text-center">
+      <TableData className='text-center'>
         <Link
           to={`/admin/products/edit/${props.id}`}
-          role="button"
-          className="pt-button pt-intent-success"
-          tabIndex="0"
+          role='button'
+          className='pt-button pt-intent-success'
+          tabIndex='0'
         >
-          <Icon iconName="edit" iconSize="inherit" />
+          <Icon iconName='edit' iconSize='inherit' />
           Edit
         </Link>
         &nbsp;
         <Link
-          to="/"
-          role="button"
-          className="pt-button pt-intent-danger"
-          tabIndex="0"
+          to='/'
+          role='button'
+          className='pt-button pt-intent-danger'
+          tabIndex='0'
         >
-          <Icon iconName="delete" iconSize="inherit" />
+          <Icon iconName='delete' iconSize='inherit' />
           Delete
         </Link>
       </TableData>

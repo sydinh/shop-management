@@ -2,9 +2,9 @@ import {
   ADD_PRODUCT,
   FETCHING_PRODUCTS,
   SHOW_PRODUCTS,
-  CLEAR_PRODUCTS,
-  GET_PRODUCT_DETAIL
-} from 'constants/actions';
+  GET_PRODUCT_DETAIL,
+  UPDATE_PRODUCT
+} from 'constants/actionTypes';
 
 const initialState = {
   isFetchingProducts: false,
@@ -26,11 +26,11 @@ const product = (state = initialState, action) => {
         isFetchingProducts: false,
         productList: action.payload,
       });
-    case CLEAR_PRODUCTS:
-      return Object.assign({}, state, {
-        productList: action.payload,
-      });
     case GET_PRODUCT_DETAIL:
+      return Object.assign({}, state, {
+        productDetail: action.payload
+      });
+    case UPDATE_PRODUCT:
       return Object.assign({}, state, {
         productDetail: action.payload
       });
