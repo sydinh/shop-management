@@ -12,7 +12,8 @@ import { addProduct } from 'actions/productActions';
 const Section = styled.section.attrs({
   className: props => props.product ? 'section-product' : '' ,
 })`
-  margin-top: 1.25rem;
+  width: 50%;
+  margin: 1.25rem auto 0 auto;
   padding: 1.25rem;
   text-align: left;
   border: 1px solid #c2c2c2;
@@ -217,18 +218,18 @@ class ProductForm extends Component {
               </Row>
             </form>
           </SectionInner>
+          <ButtonContainer>
+            <Link
+              to="/admin"
+              className="pt-button pt-intent-primary"
+              role="button"
+              tabIndex="0"
+            >
+              <Icon iconName="fast-backward" iconSize="inherit" />
+              Back
+            </Link>
+          </ButtonContainer>
         </Section>
-        <ButtonContainer>
-          <Link
-            to="/admin"
-            className="pt-button pt-intent-primary"
-            role="button"
-            tabIndex="0"
-          >
-            <Icon iconName="fast-backward" iconSize="inherit" />
-            Back
-          </Link>
-        </ButtonContainer>
       </Grid>
     );
   };

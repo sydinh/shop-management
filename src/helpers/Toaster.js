@@ -12,10 +12,14 @@ export const showNotificationFromToaster = (messageToaster, statusToaster) => {
   };
   switch (statusToaster) {
     case TOAST_SUCCESSFUL:
-      const toastSuccessful = Object.assign({}, initialToast, { intent: Intent.SUCCESS });
+      const toastSuccessful = Object.assign({}, initialToast, {
+        intent: Intent.SUCCESS
+      });
       return OurToaster.show(toastSuccessful);
     case TOAST_FAILED:
-      const toastFailed = Object.assign({}, initialToast, { intent: Intent.DANGER });
+      const toastFailed = Object.assign({}, initialToast, {
+        intent: Intent.DANGER
+      });
       return OurToaster.show(toastFailed);
     default:
       return null;

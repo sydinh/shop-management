@@ -73,8 +73,8 @@ class Admin extends Component {
                     <th><Icon iconName="double-caret-vertical" />No</th>
                     <th><Icon iconName="double-caret-vertical" />Product Name</th>
                     <th><Icon iconName="double-caret-vertical" />Product Price</th>
-                    <TableHeaderCell><Icon iconName="double-caret-vertical" />Product Description</TableHeaderCell>
-                    <th><Icon iconName="double-caret-vertical" />Product Image</th>
+                    <TableHeaderCell>Product Description</TableHeaderCell>
+                    <th>Product Image</th>
                     <th><Icon iconName="double-caret-vertical" />Created at</th>
                     <th style={{ textAlign: 'center' }}>Options</th>
                   </tr>
