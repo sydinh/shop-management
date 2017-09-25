@@ -1,6 +1,5 @@
 import './productForm.css';
 import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Field, reduxForm, reset } from 'redux-form';
 import { Link } from 'react-router-dom';
@@ -69,7 +68,7 @@ const ProductInputError = styled.p`
 const ProductTextareaError = ProductInputError.extend``;
 
 const SubmitButton = styled.button.attrs({
-  className: 'pt-button pt-icon-plus',
+  className: 'pt-button pt-intent-primary',
   type: 'submit',
 })``;
 
@@ -213,7 +212,10 @@ class ProductForm extends Component {
 
               <Row end="xs">
                 <Col mdOffset={2} md={10} xsOffset={6} xs={6}>
-                  <SubmitButton disabled={invalid || pristine || submitting}>Add</SubmitButton>
+                  <SubmitButton disabled={invalid || pristine || submitting}>
+                    <Icon iconName="plus" />
+                    Add
+                  </SubmitButton>
                 </Col>
               </Row>
             </form>
@@ -221,7 +223,7 @@ class ProductForm extends Component {
           <ButtonContainer>
             <Link
               to="/admin"
-              className="pt-button pt-intent-primary"
+              className="pt-button"
               role="button"
               tabIndex="0"
             >
@@ -240,11 +242,8 @@ const mapStateToProps = state => {
   return {};
 };
 
-const mapDispatchToProps = dispatch => {
-  const action = bindActionCreators({
-    addProduct,
-  }, dispatch);
-  return action;
+const mapDispatchToProps = {
+  addProduct,
 };
 
 const validate = values => {

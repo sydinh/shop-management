@@ -24,7 +24,6 @@ const DescriptionTableData = styled.td`
 
 const ProductItems = props => {
   const { createdAt } = props;
-
   return(
     <tr>
       <TableData className="text-center">{ props.productNo + 1 }</TableData>
@@ -41,7 +40,7 @@ const ProductItems = props => {
       <TableData>{ formatDate(createdAt) }</TableData>
       <TableData className="text-center">
         <Link
-          to="/"
+          to={`/admin/products/edit/${props.id}`}
           role="button"
           className="pt-button pt-intent-success"
           tabIndex="0"
@@ -62,7 +61,6 @@ const ProductItems = props => {
       </TableData>
     </tr>
   );
-
 };
 
 ProductItems.propTypes = {

@@ -2,7 +2,8 @@ import {
   ADD_PRODUCT,
   FETCHING_PRODUCTS,
   SHOW_PRODUCTS,
-  CLEAR_PRODUCTS
+  CLEAR_PRODUCTS,
+  GET_PRODUCT_DETAIL
 } from 'constants/actions';
 
 const initialState = {
@@ -28,6 +29,10 @@ const product = (state = initialState, action) => {
     case CLEAR_PRODUCTS:
       return Object.assign({}, state, {
         productList: action.payload,
+      });
+    case GET_PRODUCT_DETAIL:
+      return Object.assign({}, state, {
+        productDetail: action.payload
       });
     default:
       return state;

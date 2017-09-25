@@ -5,6 +5,7 @@ import {
   FETCHING_PRODUCTS,
   SHOW_PRODUCTS,
   CLEAR_PRODUCTS,
+  GET_PRODUCT_DETAIL,
 } from 'constants/actions';
 import { showNotificationFromToaster } from 'helpers/Toaster';
 import {
@@ -92,5 +93,31 @@ export const clearProducts = () => {
   return {
     type: CLEAR_PRODUCTS,
     payload: [],
+  };
+};
+
+export const getProductById = id => {
+  return axios.get(`${API_URL_BASE}/products/${id}`);
+};
+
+export const getProductDetailSuccess = data => {
+  return {
+    type: GET_PRODUCT_DETAIL,
+    payload: data,
+  };
+};
+
+export const getProductDetailFailure = errors => {
+  console.log(`${errors}`)
+  return {
+    type: 'YOUR_KEY'
+  };
+};
+
+export const getProductDetail = id => {
+  return dispatch => {
+    return getProductById(id)
+      .then(response => dispatch(getProductDetailSuccess(response.data)))
+      .catch(errors => dispatch(getProductDetailFailure(errors)));
   };
 };
