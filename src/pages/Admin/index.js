@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { showProducts } from 'actions/productActions';
+import { showProducts, clearProducts } from 'actions/productActions';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import { Spinner, Icon } from '@blueprintjs/core';
 import styled from 'styled-components';
@@ -42,6 +42,10 @@ class Admin extends Component {
 
   componentDidMount() {
     this.props.showProducts();
+  }
+
+  componentWillUnmount() {
+    this.props.clearProducts();
   }
 
   render() {
@@ -109,6 +113,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
   showProducts,
+  clearProducts,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Admin);

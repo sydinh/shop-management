@@ -3,7 +3,8 @@ import API_URL_BASE from 'APIClient/HTTPClient';
 import {
   ADD_PRODUCT,
   FETCHING_PRODUCTS,
-  SHOW_PRODUCTS
+  SHOW_PRODUCTS,
+  CLEAR_PRODUCTS,
 } from 'constants/actions';
 import { showNotificationFromToaster } from 'helpers/Toaster';
 import {
@@ -84,5 +85,12 @@ export const showProducts = () => {
     return fetchProducts()
     .then(response => dispatch(fetchProductsSuccess(response.data)))
     .catch(error => dispatch(fetchProductsFailure(error)));
+  };
+};
+
+export const clearProducts = () => {
+  return {
+    type: CLEAR_PRODUCTS,
+    payload: [],
   };
 };
