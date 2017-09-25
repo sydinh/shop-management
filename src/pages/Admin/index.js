@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { showProducts } from 'actions/productActions';
+import { showProducts, clearProducts } from 'actions/productActions';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import { Spinner, Icon } from '@blueprintjs/core';
 import styled from 'styled-components';
-import ProductItems from 'pages/Admin/Product/productItems';
+import ProductItems from './Product/productItems';
 
 const AdminContainer = styled.div`
   display: flex;
@@ -16,9 +15,13 @@ const AdminContainer = styled.div`
 `;
 
 const Table = styled.table.attrs({
-  className: 'pt-table pt-interactive',
+  className: 'pt-table pt-striped pt-interactive',
 })`
   width: 100%;
+`;
+
+const TableHeaderCell = styled.th`
+  width: 20rem;
 `;
 
 const TableData = styled.td.attrs({
@@ -41,30 +44,13 @@ class Admin extends Component {
     this.props.showProducts();
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (!nextProps.products) {
-      this.props.showProducts();
-    }
-  }
-
-  renderProducts = products => {
-    if (products) {
-      const product = products.map((product, productNo) => <ProductItems key={product.id} productNo={productNo} {...product} />);
-      return product;
-    }
-    return(
-      <tr>
-        <TableData>
-          <TableDataInner>
-            <Spinner className="pt-small pt-intent-success" />
-          </TableDataInner>
-        </TableData>
-      </tr>
-    );
+  componentWillUnmount() {
+    this.props.clearProducts();
   }
 
   render() {
-    const productArr = this.props.products.products;
+    const { match } = this.props;
+    const { isFetchingProducts, productList } = this.props.product;
     return (
       <AdminContainer>
         <Grid>
@@ -72,7 +58,7 @@ class Admin extends Component {
             <Col md={12}>
               <ButtonContainer>
                 <Link
-                  to="/"
+                  to={`${match.path}/products/add`}
                   className="pt-button pt-intent-primary"
                   role="button"
                   tabIndex="0"
@@ -87,20 +73,32 @@ class Admin extends Component {
                     <th><Icon iconName="double-caret-vertical" />No</th>
                     <th><Icon iconName="double-caret-vertical" />Product Name</th>
                     <th><Icon iconName="double-caret-vertical" />Product Price</th>
-                    <th><Icon iconName="double-caret-vertical" />Product Description</th>
-                    <th><Icon iconName="double-caret-vertical" />Product Image</th>
+                    <TableHeaderCell>Product Description</TableHeaderCell>
+                    <th>Product Image</th>
                     <th><Icon iconName="double-caret-vertical" />Created at</th>
                     <th style={{ textAlign: 'center' }}>Options</th>
                   </tr>
                 </thead>
                 <tbody>
-                  { this.renderProducts(productArr) }
+                  {
+                    isFetchingProducts &&
+                      <tr>
+                        <TableData>
+                          <TableDataInner>
+                            <Spinner className="pt-small pt-intent-success" />
+                          </TableDataInner>
+                        </TableData>
+                      </tr>
+                  }
+                  {
+                    productList.length > 0 && productList.map((product, productNo) =>
+                      <ProductItems key={product.id} productNo={productNo} {...product} />)
+                  }
                 </tbody>
               </Table>
             </Col>
           </Row>
         </Grid>
-        <br />
       </AdminContainer>
     );
   }
@@ -108,17 +106,14 @@ class Admin extends Component {
 };
 
 const mapStateToProps = state => {
-  const { products } = state;
   return {
-    products,
+    product: state.product,
   };
 };
 
-const mapDispatchToProps = dispatch => {
-  const action = bindActionCreators({
-    showProducts,
-  }, dispatch);
-  return action;
+const mapDispatchToProps = {
+  showProducts,
+  clearProducts,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Admin);

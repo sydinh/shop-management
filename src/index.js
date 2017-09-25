@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
-import App from './App';
+import App from 'App';
 import '@blueprintjs/core/dist/blueprint.css';
 import 'flexboxgrid/dist/flexboxgrid.min.css';
 
