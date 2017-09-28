@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import API_URL_BASE from 'APIClient/HTTPClient';
-import CurrencyFormat from 'helpers/CurrencyFormat';
+import FormatCurrency from 'helpers/FormatCurrency';
 import Loading from './loading';
 import FetchingFailed from './fetching-failed'
 
@@ -44,6 +44,7 @@ class Products extends React.Component {
       error: false
     }
   }
+
   componentDidMount() {
     axios.get(`${API_URL_BASE}/products`)
     .then(res => {
@@ -60,8 +61,6 @@ class Products extends React.Component {
     })
   }
 
-
-
   render() {
     if(this.state.isLoading) {
       return <Loading />
@@ -77,13 +76,13 @@ class Products extends React.Component {
           {this.state.product.map((item, i) =>
             <Col xs={6} md={3} key={i}>
               <Product>
-                <Img src={item.image} alt="" />
+                <Img src={item.image} alt='' />
                 <ProductName>{item.name}</ProductName>
                 <p>
                   <ProductPriceTitle> Price:</ProductPriceTitle>
-                  <ProductPrice>{CurrencyFormat(item.price * 1000)}</ProductPrice>
+                  <ProductPrice>{FormatCurrency(item.price * 1000)}</ProductPrice>
                 </p>
-                <button type="button" className="pt-button pt-icon-add pt-intent-success">Add to card</button>
+                <button type='button' className='pt-button pt-icon-add pt-intent-success'>Add to card</button>
               </Product>
             </Col>
           )}

@@ -49,15 +49,13 @@ const ProductItems = props => {
           Edit
         </Link>
         &nbsp;
-        <Link
-          to='/'
-          role='button'
-          className='pt-button pt-intent-danger'
-          tabIndex='0'
+        <button
+          type='button'
+          className='pt-button pt-icon-add pt-intent-danger'
+          onClick={() => props.handleDelete(props.productNo, props.id, props.name)}
         >
-          <Icon iconName='delete' iconSize='inherit' />
           Delete
-        </Link>
+        </button>
       </TableData>
     </tr>
   );
@@ -68,7 +66,10 @@ ProductItems.propTypes = {
     PropTypes.string,
     PropTypes.number,
   ]),
-  price: PropTypes.number,
+  price: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
   description: PropTypes.string,
   createdAt: PropTypes.number,
 };
