@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
-import store from './store';
-import Home from './pages/Home/';
-import Login from './pages/Login/';
-import Admin from './pages/Admin/';
-import NotFound from './pages/NotFound';
+import store from 'store';
+import Home from 'pages/Home/';
+import Login from 'pages/Login/';
+import Admin from 'pages/Admin/';
+import ProductForm from 'pages/Admin/Product/productForm';
+import NotFound from 'pages/NotFound';
 import Header from 'layouts/Header';
 import { firebaseAuth, storageKey, isAuthenticated } from 'FirebaseConfig';
 import 'styles/globalStyles';
@@ -53,7 +54,8 @@ class App extends Component {
             <Switch>
               <Route exact path='/' component={Home} />
               <Route path='/login' component={Login} />
-              <AuthRoute path='/admin' component={Admin} />
+              <AuthRoute exact path='/admin' component={Admin} />
+              <AuthRoute path='/admin/products/add' component={ProductForm} />
               <Route component={NotFound} />
             </Switch>
           </div>

@@ -1,26 +1,30 @@
-import 'pages/Admin/Product/productForm.css';
+import './productForm.css';
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Field, reduxForm, reset } from 'redux-form';
+import { Link } from 'react-router-dom';
 import { Grid, Row, Col } from 'react-flexbox-grid';
+import { Icon } from '@blueprintjs/core';
 import styled from 'styled-components';
 import { addProduct } from 'actions/productActions';
 
 const Section = styled.section.attrs({
   className: props => props.product ? 'section-product' : '' ,
 })`
-  padding: 20px;
+  width: 50%;
+  margin: 1.25rem auto 0 auto;
+  padding: 1.25rem;
   text-align: left;
   border: 1px solid #c2c2c2;
 `;
 
 const SectionInner = styled.div`
-  margin: 20px 0;
+  margin: 1.25rem 0;
 `;
 
 const SectionHeading = styled.h2`
-  padding-bottom: 10px;
+  padding-bottom: 0.625rem;
   border-bottom: 1px solid #c2c2c2;
 `;
 
@@ -68,6 +72,10 @@ const SubmitButton = styled.button.attrs({
   className: 'pt-button pt-icon-plus',
   type: 'submit',
 })``;
+
+const ButtonContainer = styled.div`
+  margin-top: 0.625rem;
+`;
 
 class ProductForm extends Component {
 
@@ -125,7 +133,11 @@ class ProductForm extends Component {
     return(
       <Grid>
         <Section product>
-          <SectionHeading>Add product</SectionHeading>
+          <SectionHeading>
+            <Icon iconName="add-to-artifact" iconSize="inherit" />
+            &nbsp;
+            Add product
+          </SectionHeading>
           <SectionInner>
             <form onSubmit={handleSubmit(this.onSubmit)}>
               <Row>
@@ -206,6 +218,17 @@ class ProductForm extends Component {
               </Row>
             </form>
           </SectionInner>
+          <ButtonContainer>
+            <Link
+              to="/admin"
+              className="pt-button pt-intent-primary"
+              role="button"
+              tabIndex="0"
+            >
+              <Icon iconName="fast-backward" iconSize="inherit" />
+              Back
+            </Link>
+          </ButtonContainer>
         </Section>
       </Grid>
     );
