@@ -2,11 +2,14 @@
 
 ### Installation
 
+**Install all packages used**
 ```
 $ npm install
 // Or
 $ yarn
 ```
+
+**Start dev environment**
 ```
 $ npm start
 // Or
