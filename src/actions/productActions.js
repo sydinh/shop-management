@@ -7,7 +7,9 @@ import {
   REMOVE_PRODUCT,
   SHOW_MODAL_DELETE,
   CLOSE_MODAL_DELETE,
-  SEARCH_PRODUCT
+  SEARCH_PRODUCT,
+  SORT_PRODUCTS_BY_NAME,
+  SORT_PRODUCTS_BY_PRICE
 } from 'constants/actionTypes';
 
 export const fetchingProducts = () => {
@@ -70,5 +72,19 @@ export const searchProductSuccess = data => {
   return {
     type: SEARCH_PRODUCT,
     payload: data
-  }
-}
+  };
+};
+
+export const sortNameSuccess = data => {
+  return {
+    type: SORT_PRODUCTS_BY_NAME,
+    payload: data,
+  };
+};
+
+export const sortPriceSuccess = data => {
+  return {
+    type: SORT_PRODUCTS_BY_PRICE,
+    payload: data,
+  };
+};

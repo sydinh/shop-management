@@ -8,3 +8,5 @@ export const REMOVE_PRODUCT = 'products/Remove';
 export const SHOW_MODAL_DELETE = 'products/ShowModalDelete';
 export const CLOSE_MODAL_DELETE = 'products/CloseModalDelete';
 export const SEARCH_PRODUCT = 'products/SearchProduct';
+export const SORT_PRODUCTS_BY_NAME = 'products/SortByName';
+export const SORT_PRODUCTS_BY_PRICE = 'products/SortByPrice';
