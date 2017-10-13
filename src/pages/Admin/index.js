@@ -16,6 +16,7 @@ import { Spinner, Icon } from '@blueprintjs/core';
 import styled from 'styled-components';
 import ProductItems from './Product/productItems';
 import RemoveModal from './ProductModal/RemoveModal';
+import { OurToaster } from 'helpers/Toaster';
 
 const AdminContainer = styled.div`
   display: flex;
@@ -61,13 +62,7 @@ class Admin extends Component {
     super(props);
     this.state = {
       pageID: 1,
-      limitID: 20
-    };
-  }
-
-  constructor() {
-    super();
-    this.state = {
+      limitID: 20,
       activeIndex: 0,
       sortKeyword: '',
       sortOrderCategories: [
@@ -76,7 +71,7 @@ class Admin extends Component {
         { name: 'asc' },
       ],
       isNameFieldActive: false,
-      isPriceFieldActive: false,
+      isPriceFieldActive: false
     };
   }
 
@@ -87,6 +82,7 @@ class Admin extends Component {
 
   deleteItem = (index, id, name) => {
     this.props.removeProduct(index, id, name);
+    OurToaster.update(OurToaster.clear(), {});
   }
 
   showModal = () => {
@@ -156,12 +152,6 @@ class Admin extends Component {
               <Table>
                 <thead>
                   <tr>
-                    <th><Icon iconName='double-caret-vertical' />No</th>
-                    <th><Icon iconName='double-caret-vertical' />Product Name</th>
-                    <th><Icon iconName='double-caret-vertical' />Product Price</th>
-                    <TableHeaderCell>Product Description</TableHeaderCell>
-                    <th>Product Image</th>
-                    <th><Icon iconName='double-caret-vertical' />Created at</th>
                     <TableHeaderCellWithSort>No</TableHeaderCellWithSort>
                     <TableHeaderCellWithSort onClick={this.sortProductByName}>
                       <Icon

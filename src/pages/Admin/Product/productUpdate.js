@@ -11,6 +11,7 @@ import Label from './Components/Label';
 import ErrorNotification from './Components/ErrorNotification';
 import BackLink from './Components/BackLink';
 import validate from './helpers/productFormValidation';
+import normalizePrice from 'helpers/NormalizePrice';
 import {
   Section,
   SectionInner,
@@ -145,6 +146,7 @@ class ProductUpdate extends Component {
                     className='pt-input'
                     placeholder='Product Price'
                     dir='auto'
+                    normalize={normalizePrice}
                   />
                 </Col>
               </Row>

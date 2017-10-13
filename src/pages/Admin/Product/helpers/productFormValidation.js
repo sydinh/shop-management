@@ -14,9 +14,7 @@ const validate = values => {
 
   if (!productPrice) {
     errors.productPrice = 'Required';
-  } else if (!/^[0-9]*$/.test(productPrice)) {
-    errors.productPrice = 'Must be number';
-  };
+  }
 
   if (!productDescription) {
     errors.productDescription = 'Required';

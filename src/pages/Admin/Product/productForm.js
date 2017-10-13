@@ -10,6 +10,7 @@ import Label from './Components/Label';
 import ErrorNotification from './Components/ErrorNotification';
 import BackLink from './Components/BackLink';
 import validate from './helpers/productFormValidation';
+import normalizePrice from 'helpers/NormalizePrice';
 import {
   Section,
   SectionInner,
@@ -65,8 +66,15 @@ class ProductForm extends Component {
     );
   }
 
-  onSubmit = data => {
+  onSubmit = ({ productName, productPrice, productDescription }) => {
     const { addProduct, dispatch } = this.props;
+    const trimProductPrice = productPrice.replace(/[^\w\s]/gi, ''); // Remove all special characters
+    const data = {
+      productName,
+      productDescription,
+      productPrice: trimProductPrice
+    };
+
     addProduct(data);
     dispatch(resetForm('addProductForm'));
   }
@@ -112,6 +120,7 @@ class ProductForm extends Component {
                     placeholder='Product price'
                     type='text'
                     dir='auto'
+                    normalize={normalizePrice}
                   />
                 </Col>
               </Row>
