@@ -1,9 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Redirect } from 'react-router-dom';
-import {
-  Button,
-} from '@blueprintjs/core';
+import { Button } from '@blueprintjs/core';
 import { firebaseAuth } from 'FirebaseConfig';
 
 const LoginContainer = styled.div`
@@ -11,11 +9,27 @@ const LoginContainer = styled.div`
   justify-content: center;
   margin-top: 50px;
 `;
+
 const LoginBox = styled.div`
   width: 400px;
+
   form {
     padding: 10px 20px;
   }
+`;
+
+const Hint = styled.p`
+  display: flex;
+  font-size: 12px;
+  padding: 0 20px;
+
+  em {
+    padding-left: 5px;
+  }
+`;
+
+const AlertError = styled.div`
+  margin-bottom: 20px;
 `;
 
 class Login extends React.Component {
@@ -28,13 +42,13 @@ class Login extends React.Component {
       password: '',
       error: null,
     }
-    this.login = this.login.bind(this);
+    this.handleLogin = this.handleLogin.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
 
-  login(e) {
-    e.preventDefault();
+  handleLogin(event) {
+    event.preventDefault();
     const { email, password } = this.state;
 
     this.setState({
@@ -57,13 +71,13 @@ class Login extends React.Component {
       });
   }
 
-  handleSubmit(e) {
-    e.preventDefault();
+  handleSubmit(event) {
+    event.preventDefault();
   }
 
-  handleChange(e) {
+  handleChange(event) {
     this.setState({
-      [e.target.name]: e.target.value
+      [event.target.name]: event.target.value
     })
   }
 
@@ -80,36 +94,37 @@ class Login extends React.Component {
     return (
       <LoginContainer>
         <LoginBox className='pt-card pt-elevation-1'>
-          <form onSubmit={this.login}>
-            {this.state.user &&
-              <p>{this.state.user}</p>
-            }
+          <Hint>
+            <strong>Hint:</strong>
+            <em>admin@example.com/12345678</em>
+          </Hint>
+          <form onSubmit={this.handleLogin}>
             {this.state.error &&
-              <div className='pt-callout pt-intent-danger' style={{ marginBottom: 20 }}>{this.state.error}</div>
+              <AlertError className='pt-callout pt-intent-danger'>{this.state.error}</AlertError>
             }
             <div className='pt-form-group'>
               <div className='pt-form-content'>
                 <input
-                  type='text'
+                  type='email'
                   id='email'
                   name='email'
                   className='pt-input pt-large pt-fill'
                   placeholder='Email'
+                  value={this.state.email}
                   onChange={this.handleChange}
-                  value={this.state.username}
                 />
               </div>
             </div>
             <div className='pt-form-group'>
               <div className='pt-form-content'>
                 <input
-                  type="password"
+                  type='password'
                   id='password'
                   name='password'
                   className='pt-input pt-large pt-fill'
                   placeholder='Password'
-                  onChange={this.handleChange}
                   value={this.state.password}
+                  onChange={this.handleChange}
                 />
               </div>
             </div>

@@ -8,7 +8,8 @@ import Admin from 'pages/Admin/';
 import ProductForm from 'pages/Admin/Product/productForm';
 import NotFound from 'pages/NotFound';
 import Header from 'layouts/Header';
-import { firebaseAuth, storageKey, isAuthenticated } from 'FirebaseConfig';
+import { firebaseAuth, isAuthenticated } from 'FirebaseConfig';
+import { LoginStore } from 'LocalStorage';
 import 'styles/globalStyles';
 
 const AuthRoute = ({ component: Component, ...rest }) => {
@@ -36,10 +37,10 @@ class App extends Component {
   componentDidMount() {
     firebaseAuth.onAuthStateChanged(user => {
       if (user) {
-        window.localStorage.setItem(storageKey, user.uid);
+        LoginStore.setData(user.uid);
         this.setState({uid: user.uid});
       } else {
-        window.localStorage.removeItem(storageKey);
+        LoginStore.clearData();
         this.setState({uid: null});
       }
     });

@@ -1,4 +1,5 @@
 import * as firebase from 'firebase';
+import { LoginStore } from 'LocalStorage';
 
 const config = {
   apiKey: "AIzaSyCF6jvCTXZw1tdsu7I5JWaAi9uCmP40Z1U",
@@ -12,8 +13,6 @@ const config = {
 export const firebaseApp = firebase.initializeApp(config);
 export const firebaseAuth = firebaseApp.auth();
 
-export const storageKey = 'KEY_FOR_LOCAL_STORAGE';
-
 export const isAuthenticated = () => {
-  return !!firebaseAuth.currentUser || !!localStorage.getItem(storageKey);
+  return !!firebaseAuth.currentUser || !!LoginStore.authenticated();
 }
