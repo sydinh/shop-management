@@ -2,8 +2,19 @@
 
 ### Installation
 
-+ Run `npm install` or `yarn`
-+ Run `npm start` or `yarn start` for develop
+**Install all packages used**
+```
+$ npm install
+// Or
+$ yarn
+```
+
+**Start dev environment**
+```
+$ npm start
+// Or
+$ yarn start
+```
 
 ### Deployment
 
