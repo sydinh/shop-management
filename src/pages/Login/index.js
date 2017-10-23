@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Redirect } from 'react-router-dom';
 import { Button } from '@blueprintjs/core';
@@ -20,11 +20,11 @@ const LoginBox = styled.div`
 
 const Hint = styled.p`
   display: flex;
-  font-size: 12px;
+  font-size: 13px;
   padding: 0 20px;
 
-  em {
-    padding-left: 5px;
+  strong {
+    padding-right: 5px;
   }
 `;
 
@@ -32,7 +32,7 @@ const AlertError = styled.div`
   margin-bottom: 20px;
 `;
 
-class Login extends React.Component {
+class Login extends Component {
   constructor() {
     super();
     this.state = {
@@ -96,7 +96,7 @@ class Login extends React.Component {
         <LoginBox className='pt-card pt-elevation-1'>
           <Hint>
             <strong>Hint:</strong>
-            <em>admin@example.com/12345678</em>
+            admin@example.com/12345678
           </Hint>
           <form onSubmit={this.handleLogin}>
             {this.state.error &&
