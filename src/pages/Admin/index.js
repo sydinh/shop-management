@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { showProducts, clearProducts } from 'actions/productActions';
+import { showProducts } from 'dispatchers/productDispatcher';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import { Spinner, Icon } from '@blueprintjs/core';
 import styled from 'styled-components';
@@ -44,10 +44,6 @@ class Admin extends Component {
     this.props.showProducts();
   }
 
-  componentWillUnmount() {
-    this.props.clearProducts();
-  }
-
   render() {
     const { match } = this.props;
     const { isFetchingProducts, productList } = this.props.product;
@@ -59,33 +55,33 @@ class Admin extends Component {
               <ButtonContainer>
                 <Link
                   to={`${match.path}/products/add`}
-                  className="pt-button pt-intent-primary"
-                  role="button"
-                  tabIndex="0"
+                  className='pt-button pt-intent-primary'
+                  role='button'
+                  tabIndex='0'
                 >
-                  <Icon iconName="add" iconSize="inherit" />
+                  <Icon iconName='add' iconSize='inherit' />
                   Add product
                 </Link>
               </ButtonContainer>
               <Table>
                 <thead>
                   <tr>
-                    <th><Icon iconName="double-caret-vertical" />No</th>
-                    <th><Icon iconName="double-caret-vertical" />Product Name</th>
-                    <th><Icon iconName="double-caret-vertical" />Product Price</th>
+                    <th><Icon iconName='double-caret-vertical' />No</th>
+                    <th><Icon iconName='double-caret-vertical' />Product Name</th>
+                    <th><Icon iconName='double-caret-vertical' />Product Price</th>
                     <TableHeaderCell>Product Description</TableHeaderCell>
                     <th>Product Image</th>
-                    <th><Icon iconName="double-caret-vertical" />Created at</th>
+                    <th><Icon iconName='double-caret-vertical' />Created at</th>
                     <th style={{ textAlign: 'center' }}>Options</th>
                   </tr>
                 </thead>
                 <tbody>
                   {
-                    isFetchingProducts &&
+                    (productList.length === 0 && isFetchingProducts) &&
                       <tr>
                         <TableData>
                           <TableDataInner>
-                            <Spinner className="pt-small pt-intent-success" />
+                            <Spinner className='pt-small pt-intent-success' />
                           </TableDataInner>
                         </TableData>
                       </tr>
@@ -107,13 +103,12 @@ class Admin extends Component {
 
 const mapStateToProps = state => {
   return {
-    product: state.product,
+    product: state.product
   };
 };
 
 const mapDispatchToProps = {
-  showProducts,
-  clearProducts,
+  showProducts
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Admin);

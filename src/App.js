@@ -6,6 +6,7 @@ import Home from 'pages/Home/';
 import Login from 'pages/Login/';
 import Admin from 'pages/Admin/';
 import ProductForm from 'pages/Admin/Product/productForm';
+import ProductUpdate from 'pages/Admin/Product/productUpdate';
 import NotFound from 'pages/NotFound';
 import { fakeAuth } from 'fakeAuth';
 import Header from 'layouts/Header';
@@ -40,6 +41,7 @@ class App extends Component {
               <Route path='/login' component={Login} />
               <AuthRoute exact path='/admin' component={Admin} />
               <AuthRoute path='/admin/products/add' component={ProductForm} />
+              <AuthRoute path='/admin/products/edit/:productId' component={ProductUpdate} />
               <Route component={NotFound} />
             </Switch>
           </div>

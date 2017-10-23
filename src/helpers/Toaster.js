@@ -1,7 +1,7 @@
 import { Position, Toaster, Intent } from '@blueprintjs/core';
 import { TOAST_SUCCESSFUL, TOAST_FAILED } from 'constants/toasters';
 
-const OurToaster = Toaster.create({
+export const OurToaster = Toaster.create({
   className: 'my-toaster',
   position: Position.TOP_CENTER,
 });
