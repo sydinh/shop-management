@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import API_URL_BASE from 'APIClient/HTTPClient';
-import CurrencyFormat from 'helper/CurrencyFormat';
+import CurrencyFormat from 'helpers/CurrencyFormat';
 import Loading from './loading';
 import FetchingFailed from './fetching-failed'
 
