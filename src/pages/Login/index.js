@@ -33,26 +33,20 @@ const AlertError = styled.div`
 `;
 
 class Login extends Component {
-  constructor() {
-    super();
-    this.state = {
-      redirectToReferrer: false,
-      loading: false,
-      email: '',
-      password: '',
-      error: null,
-    }
-    this.handleLogin = this.handleLogin.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-  }
+  state = {
+    redirectToReferrer: false,
+    loading: false,
+    email: '',
+    password: '',
+    error: null
+  };
 
-  handleLogin(event) {
+  handleLogin = event => {
     event.preventDefault();
     const { email, password } = this.state;
 
     this.setState({
-      loading: true,
+      loading: true
     });
 
     firebaseAuth.signInWithEmailAndPassword(email, password)
@@ -60,29 +54,30 @@ class Login extends Component {
         this.setState({
           error: null,
           loading: false,
-          redirectToReferrer: true,
+          redirectToReferrer: true
         });
       })
       .catch(error => {
         this.setState({
           error: error.message,
-          loading: false,
+          loading: false
         });
       });
   }
 
-  handleSubmit(event) {
+  handleSubmit = event => {
     event.preventDefault();
   }
 
-  handleChange(event) {
+  handleChange = event => {
+    const { name, value } = event.target;
     this.setState({
-      [event.target.name]: event.target.value
-    })
+      [name]: value
+    });
   }
 
   render() {
-    const { from } = this.props.location.state || { from: { pathname: '/' } }
+    const { from } = this.props.location.state || { from: { pathname: '/' } };
     const { redirectToReferrer } = this.state;
 
     if (redirectToReferrer) {

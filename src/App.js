@@ -28,12 +28,9 @@ const AuthRoute = ({ component: Component, ...rest }) => {
 };
 
 class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-      uid: null,
-    }
-  }
+  state = {
+    uid: null
+  };
 
   componentDidMount() {
     firebaseAuth.onAuthStateChanged(user => {
