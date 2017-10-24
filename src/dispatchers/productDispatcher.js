@@ -10,7 +10,10 @@ import {
   fetchingProducts,
   fetchProductsSuccess,
   addProductSuccess,
-  updateProductSuccess
+  updateProductSuccess,
+  removeProductOnRedux,
+  showModalDelete,
+  closeModalDelete
 } from 'actions/productActions';
 
 export const fetchProducts = () => {
@@ -79,3 +82,29 @@ export const updateProduct = (data, id) => {
     });
   };
 };
+
+export const removeProduct = (index, id, name) => {
+  return dispatch => {
+    dispatch(showModalDelete(index, id, name));
+  };
+};
+
+export const agreeDelete = () => {
+  return (dispatch, getState) => {
+    const { index, id, name } = getState().product;
+
+    axios({
+      method: 'delete',
+      url: `${API_URL_BASE}/products/${id}`,
+    })
+    .then(response => {
+      dispatch(removeProductOnRedux(index));
+      dispatch(closeModalDelete());
+      showNotificationFromToaster(`Product ${name} deleted!`, successful);
+    })
+    .catch(errors => {
+      showNotificationFromToaster('Delete product failed!', failed);
+      dispatch(closeModalDelete());
+    });
+  }
+}
