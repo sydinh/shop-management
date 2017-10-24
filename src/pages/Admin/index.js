@@ -1,11 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { showProducts } from 'dispatchers/productDispatcher';
+import {
+  removeProduct,
+  showProducts
+} from 'dispatchers/productDispatcher';
+import {
+  showModalDelete,
+  closeModalDelete
+} from 'actions/productActions';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import { Spinner, Icon } from '@blueprintjs/core';
 import styled from 'styled-components';
 import ProductItems from './Product/productItems';
+import RemoveModal from './ProductModal/RemoveModal';
 
 const AdminContainer = styled.div`
   display: flex;
@@ -42,6 +50,22 @@ class Admin extends Component {
 
   componentDidMount() {
     this.props.showProducts();
+  }
+
+  componentWillUnmount() {
+    this.props.clearProducts();
+  }
+
+  deleteItem = (index, id, name) => {
+    this.props.removeProduct(index, id, name);
+  }
+
+  showModal = () => {
+    this.props.showModalDelete();
+  }
+
+  closeModal = () => {
+    this.props.closeModalDelete();
   }
 
   render() {
@@ -88,13 +112,22 @@ class Admin extends Component {
                   }
                   {
                     productList.length > 0 && productList.map((product, productNo) =>
-                      <ProductItems key={product.id} productNo={productNo} {...product} />)
+                      <ProductItems
+                        key={product.id}
+                        productNo={productNo}
+                        {...product}
+                        handleDelete={this.deleteItem}
+                      />)
                   }
                 </tbody>
               </Table>
             </Col>
           </Row>
         </Grid>
+        <RemoveModal
+          handleDelete={this.deleteItem}
+          handleCloseModal={this.closeModal}
+        />
       </AdminContainer>
     );
   }
@@ -108,7 +141,10 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = {
-  showProducts
+  showProducts,
+  removeProduct,
+  showModalDelete,
+  closeModalDelete
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Admin);

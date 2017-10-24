@@ -3,12 +3,19 @@ import {
   FETCHING_PRODUCTS,
   SHOW_PRODUCTS,
   GET_PRODUCT_DETAIL,
-  UPDATE_PRODUCT
+  UPDATE_PRODUCT,
+  REMOVE_PRODUCT,
+  SHOW_MODAL_DELETE,
+  CLOSE_MODAL_DELETE,
 } from 'constants/actionTypes';
 
 const initialState = {
   isFetchingProducts: false,
   productList: [],
+  isOpen: false,
+  index: null,
+  id: null,
+  name: null,
 };
 
 const product = (state = initialState, action) => {
@@ -33,6 +40,21 @@ const product = (state = initialState, action) => {
     case UPDATE_PRODUCT:
       return Object.assign({}, state, {
         productDetail: action.payload
+      });
+    case REMOVE_PRODUCT:
+      return Object.assign({}, state, {
+        productList: state.productList.filter((e, i) => i !==action.id)
+      });
+    case SHOW_MODAL_DELETE:
+      return Object.assign({}, state, {
+        isOpen: true,
+        index: action.index,
+        id: action.id,
+        name: action.name,
+      });
+    case CLOSE_MODAL_DELETE:
+      return Object.assign({}, state, {
+        isOpen: false
       });
     default:
       return state;

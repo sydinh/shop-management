@@ -9,7 +9,7 @@ class FetchingFailed extends React.Component {
   render() {
     return (
       <FetchingBox>
-        <div className="pt-callout pt-intent-danger">
+        <div className='pt-callout pt-intent-danger'>
           <h5>Error</h5>
           Request failed with status code 404
         </div>
