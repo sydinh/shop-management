@@ -1,14 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router';
-import {
-  Button,
-  Menu,
-  MenuItem,
-  Popover,
-  Position,
-} from '@blueprintjs/core';
-import { fakeAuth } from 'fakeAuth';
+import { Button, Menu, MenuItem, Popover, Position } from '@blueprintjs/core';
+import { firebaseAuth, isAuthenticated } from 'FirebaseConfig';
 
 class Header extends React.Component {
   constructor() {
@@ -17,9 +11,7 @@ class Header extends React.Component {
   }
 
   logout() {
-    fakeAuth.signout(() => {
-      this.props.history.push('/')
-    })
+    firebaseAuth.signOut();
   }
 
   render() {
@@ -38,7 +30,7 @@ class Header extends React.Component {
             </div>
           </div>
           <div className='pt-navbar-group pt-align-right'>
-            {fakeAuth.isAuthenticated &&
+            {isAuthenticated() &&
               <div className='pt-button-group pt-minimal'>
                 <Button text='Hà Hữu Tín' />
                 <Popover content={subMenu} position={Position.BOTTOM_RIGHT}>
@@ -46,7 +38,7 @@ class Header extends React.Component {
                 </Popover>
               </div>
             }
-            {!fakeAuth.isAuthenticated &&
+            {!isAuthenticated() &&
               <Link to='/login' className='pt-button pt-intent-success pt-icon-log-in'>Login</Link>
             }
           </div>
