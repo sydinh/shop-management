@@ -8,27 +8,41 @@ import Admin from 'pages/Admin/';
 import ProductForm from 'pages/Admin/Product/productForm';
 import ProductUpdate from 'pages/Admin/Product/productUpdate';
 import NotFound from 'pages/NotFound';
-import { fakeAuth } from 'fakeAuth';
 import Header from 'layouts/Header';
+import { firebaseAuth, isAuthenticated } from 'FirebaseConfig';
+import { LoginStore } from 'LocalStorage';
 import 'styles/globalStyles';
 
 const AuthRoute = ({ component: Component, ...rest }) => {
   return (
-    <Route
-      {...rest}
-      render={props => (
-        fakeAuth.isAuthenticated
+    <Route {...rest} render={props => (
+      isAuthenticated()
         ? <Component {...props} />
         : <Redirect to={{
             pathname: '/login',
-            state: { from: props.location }
-          }}/>
+            state: {from: props.location}
+          }} />
       )}
     />
   );
 };
 
 class App extends Component {
+  state = {
+    uid: null
+  };
+
+  componentDidMount() {
+    firebaseAuth.onAuthStateChanged(user => {
+      if (user) {
+        LoginStore.setData(user.uid);
+        this.setState({uid: user.uid});
+      } else {
+        LoginStore.clearData();
+        this.setState({uid: null});
+      }
+    });
+  }
 
   render() {
     return (
@@ -49,7 +63,6 @@ class App extends Component {
       </Provider>
     );
   };
-
 };
 
 export default App;
