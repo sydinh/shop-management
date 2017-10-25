@@ -52,10 +52,6 @@ class Admin extends Component {
     this.props.showProducts();
   }
 
-  componentWillUnmount() {
-    this.props.clearProducts();
-  }
-
   deleteItem = (index, id, name) => {
     this.props.removeProduct(index, id, name);
   }
