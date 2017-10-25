@@ -7,6 +7,7 @@ import Login from 'pages/Login/';
 import Admin from 'pages/Admin/';
 import ProductForm from 'pages/Admin/Product/productForm';
 import ProductUpdate from 'pages/Admin/Product/productUpdate';
+import ProductDetail from 'pages/ProductDetail/';
 import NotFound from 'pages/NotFound';
 import Header from 'layouts/Header';
 import { firebaseAuth, isAuthenticated } from 'FirebaseConfig';
@@ -56,6 +57,7 @@ class App extends Component {
               <AuthRoute exact path='/admin' component={Admin} />
               <AuthRoute path='/admin/products/add' component={ProductForm} />
               <AuthRoute path='/admin/products/edit/:productId' component={ProductUpdate} />
+              <AuthRoute path='/home/product/:productId' component={ProductDetail} />
               <Route component={NotFound} />
             </Switch>
           </div>
