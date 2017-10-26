@@ -7,6 +7,7 @@ import {
   REMOVE_PRODUCT,
   SHOW_MODAL_DELETE,
   CLOSE_MODAL_DELETE,
+  SEARCH_PRODUCT
 } from 'constants/actionTypes';
 
 export const fetchingProducts = () => {
@@ -64,3 +65,10 @@ export const closeModalDelete = () => {
     type: CLOSE_MODAL_DELETE
   };
 };
+
+export const searchProductSuccess = data => {
+  return {
+    type: SEARCH_PRODUCT,
+    payload: data
+  }
+}

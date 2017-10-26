@@ -1,12 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import axios from 'axios';
+import { connect } from 'react-redux';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import { Link } from 'react-router-dom';
-import API_URL_BASE from 'APIClient/HTTPClient';
 import FormatCurrency from 'helpers/FormatCurrency';
+import { showProducts, searchProduct } from 'dispatchers/productDispatcher';
 import Loading from './loading';
-import FetchingFailed from './fetching-failed'
 
 const Product = styled.div`
   border: 1px solid #ccc;
@@ -36,45 +35,63 @@ const ProductPrice = styled.span`
   color: #eb4947;
 `;
 
+const SearchBar = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
 class Products extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      product: [],
-      isLoading: true,
-      error: false
-    }
+  constructor(props) {
+    super(props);
+    this.state = { value: '' }
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentDidMount() {
-    axios.get(`${API_URL_BASE}/products`)
-    .then(res => {
-      this.setState({
-        product: res.data,
-        isLoading: false
-      });
-    })
-    .catch(err => {
-      this.setState({
-        error: true,
-        isLoading: false
-      })
-    })
+    this.props.showProducts();
+  }
+
+  handleChange(event) {
+    this.setState({ value: event.target.value });
+  }
+
+  handleSubmit(event) {
+    const { value } = this.state;
+    this.props.searchProduct(value);
+    event.preventDefault();
   }
 
   render() {
-    if(this.state.isLoading) {
-      return <Loading />
-    }
+    const { isFetchingProducts, productList } = this.props.product;
 
-    if(this.state.error) {
-      return <FetchingFailed />
+    if(productList.length === 0 && isFetchingProducts) {
+      return <Loading />
     }
 
     return (
       <Grid>
+        <SearchBar>
+          <form onSubmit={this.handleSubmit}>
+            <label>
+              <input
+                type="text"
+                placeholder='Search product'
+                className="pt-input pt-intent-success"
+                value={this.state.value}
+                onChange={this.handleChange}
+              />
+            </label>
+            <input
+              type="submit"
+              value="Search"
+              className="pt-button pt-intent-success">
+            </input>
+          </form>
+          <Link to='/admin' className='pt-button pt-large pt-intent-primary'>Go to admin page</Link>
+        </SearchBar>
         <Row>
-          {this.state.product.map((item, i) =>
+          {productList.length > 0 && productList.map((item, i) =>
             <Col xs={6} md={3} key={i}>
               <Link to={`/home/product/${item.id}`}>
                 <Product>
@@ -95,4 +112,15 @@ class Products extends React.Component {
   }
 }
 
-export default Products;
+const mapStateToProps = state => {
+  return {
+    product: state.product
+  };
+};
+
+const mapDispatchToProps = {
+  showProducts,
+  searchProduct
+};
+
+export default connect(mapStateToProps, mapDispatchToProps) (Products);
