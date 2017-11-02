@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 import Products from './products';
 
 const HomeContainer = styled.div`
@@ -15,7 +14,6 @@ class Home extends React.Component {
   render() {
     return (
       <HomeContainer>
-        <Link to='/admin' className='pt-button pt-large pt-intent-primary'>Go to admin page</Link>
         <Products />
       </HomeContainer>
     )

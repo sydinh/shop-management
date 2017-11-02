@@ -7,6 +7,7 @@ import {
   REMOVE_PRODUCT,
   SHOW_MODAL_DELETE,
   CLOSE_MODAL_DELETE,
+  SEARCH_PRODUCT
 } from 'constants/actionTypes';
 
 const initialState = {
@@ -15,7 +16,7 @@ const initialState = {
   isOpen: false,
   index: null,
   id: null,
-  name: null,
+  name: null
 };
 
 const product = (state = initialState, action) => {
@@ -55,6 +56,10 @@ const product = (state = initialState, action) => {
     case CLOSE_MODAL_DELETE:
       return Object.assign({}, state, {
         isOpen: false
+      });
+    case SEARCH_PRODUCT:
+      return Object.assign({}, state, {
+        productList: action.payload
       });
     default:
       return state;
