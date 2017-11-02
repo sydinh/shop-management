@@ -13,7 +13,8 @@ import {
   updateProductSuccess,
   removeProductOnRedux,
   showModalDelete,
-  closeModalDelete
+  closeModalDelete,
+  searchProductSuccess
 } from 'actions/productActions';
 
 export const fetchProducts = () => {
@@ -105,6 +106,21 @@ export const agreeDelete = () => {
     .catch(errors => {
       showNotificationFromToaster('Delete product failed!', failed);
       dispatch(closeModalDelete());
+    });
+  }
+}
+
+export const searchProduct = value => {
+  return (dispatch, getState) => {
+    axios({
+      method: 'get',
+      url: `${API_URL_BASE}/products?filter=${value}`,
+    })
+    .then(response => {
+      dispatch(searchProductSuccess(response.data));
+    })
+    .catch(errors => {
+      console.log(errors);
     });
   }
 }
