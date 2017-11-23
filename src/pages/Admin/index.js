@@ -46,10 +46,19 @@ const ButtonContainer = styled.div`
   justify-content: flex-end;
 `;
 
+
 class Admin extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      pageID: 1,
+      limitID: 20
+    };
+  }
 
   componentDidMount() {
-    this.props.showProducts();
+    const { limitID, pageID } = this.state;
+    this.props.showProducts(pageID, limitID);
   }
 
   deleteItem = (index, id, name) => {
