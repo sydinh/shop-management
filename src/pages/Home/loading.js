@@ -4,6 +4,12 @@ import styled from 'styled-components';
 
 const LoadingBox = styled.div`
   margin-top: 50px;
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  width: 100%;
+  bottom: -100px;
+  left: 0;
 `;
 
 class Loading extends React.Component {

@@ -17,14 +17,14 @@ import {
   searchProductSuccess
 } from 'actions/productActions';
 
-export const fetchProducts = () => {
-  return axios.get(`${API_URL_BASE}/products`);
+export const fetchProducts = (pageID, limitID) => {
+  return axios.get(`${API_URL_BASE}/products?page=${pageID}&limit=${limitID}`);
 };
 
-export const showProducts = () => {
+export const showProducts = (pageID, limitID) => {
   return dispatch => {
     dispatch(fetchingProducts());
-    return fetchProducts()
+    fetchProducts(pageID, limitID)
     .then(response => dispatch(fetchProductsSuccess(response.data)))
     .catch(errors => console.log(errors));
   };
