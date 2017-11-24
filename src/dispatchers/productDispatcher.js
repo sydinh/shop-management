@@ -14,7 +14,9 @@ import {
   removeProductOnRedux,
   showModalDelete,
   closeModalDelete,
-  searchProductSuccess
+  searchProductSuccess,
+  sortNameSuccess,
+  sortPriceSuccess
 } from 'actions/productActions';
 
 export const fetchProducts = (pageID, limitID) => {
@@ -107,8 +109,8 @@ export const agreeDelete = () => {
       showNotificationFromToaster('Delete product failed!', failed);
       dispatch(closeModalDelete());
     });
-  }
-}
+  };
+};
 
 export const searchProduct = value => {
   return (dispatch, getState) => {
@@ -122,5 +124,29 @@ export const searchProduct = value => {
     .catch(errors => {
       console.log(errors);
     });
-  }
-}
+  };
+};
+
+export const sortProductByName = key => {
+  const urlNoParams = `${API_URL_BASE}/products`;
+  const urlHasParams = `${API_URL_BASE}/products?sortBy=name&order=${key}`;
+  const url = key === 'default' ? urlNoParams : urlHasParams;
+
+  return dispatch => {
+    return axios.get(url)
+    .then(response => dispatch(sortNameSuccess(response.data)))
+    .catch(errors => console.log(errors));
+  };
+};
+
+export const sortProductByPrice = key => {
+  const urlNoParams = `${API_URL_BASE}/products`;
+  const urlHasParams = `${API_URL_BASE}/products?sortBy=price&order=${key}`;
+  const url = key === 'default' ? urlNoParams : urlHasParams;
+
+  return dispatch => {
+    return axios.get(url)
+    .then(response => dispatch(sortPriceSuccess(response.data)))
+    .catch(errors => console.log(errors));
+  };
+};

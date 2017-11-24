@@ -3,7 +3,9 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import {
   removeProduct,
-  showProducts
+  showProducts,
+  sortProductByName,
+  sortProductByPrice,
 } from 'dispatchers/productDispatcher';
 import {
   showModalDelete,
@@ -14,6 +16,7 @@ import { Spinner, Icon } from '@blueprintjs/core';
 import styled from 'styled-components';
 import ProductItems from './Product/productItems';
 import RemoveModal from './ProductModal/RemoveModal';
+import { OurToaster } from 'helpers/Toaster';
 
 const AdminContainer = styled.div`
   display: flex;
@@ -46,13 +49,29 @@ const ButtonContainer = styled.div`
   justify-content: flex-end;
 `;
 
+const TableHeaderCellWithSort = styled.th`
+  cursor: pointer;
+
+  &:hover {
+    color: #009900;
+  }
+`;
 
 class Admin extends Component {
   constructor(props) {
     super(props);
     this.state = {
       pageID: 1,
-      limitID: 20
+      limitID: 20,
+      activeIndex: 0,
+      sortKeyword: '',
+      sortOrderCategories: [
+        { name: 'default' },
+        { name: 'desc' },
+        { name: 'asc' },
+      ],
+      isNameFieldActive: false,
+      isPriceFieldActive: false
     };
   }
 
@@ -63,6 +82,7 @@ class Admin extends Component {
 
   deleteItem = (index, id, name) => {
     this.props.removeProduct(index, id, name);
+    OurToaster.update(OurToaster.clear(), {});
   }
 
   showModal = () => {
@@ -73,7 +93,44 @@ class Admin extends Component {
     this.props.closeModalDelete();
   }
 
+  generateSortKeyword = () => {
+    let { activeIndex, sortKeyword, sortOrderCategories } = this.state;
+
+    activeIndex === (sortOrderCategories.length - 1)
+      ? activeIndex = 0
+      : activeIndex++
+
+    this.setState({ activeIndex });
+
+    activeIndex === 1
+      ? sortKeyword = sortOrderCategories[1].name
+      : activeIndex === 2
+        ? sortKeyword = sortOrderCategories[2].name
+        : sortKeyword = sortOrderCategories[0].name
+
+    return sortKeyword;
+  }
+
+  sortProductByName = () => {
+    const sortKeyword = this.generateSortKeyword();
+    this.props.sortProductByName(sortKeyword);
+    this.setState({
+      isNameFieldActive: true,
+      isPriceFieldActive: false,
+    });
+  }
+
+  sortProductByPrice = () => {
+    const sortKeyword = this.generateSortKeyword();
+    this.props.sortProductByPrice(sortKeyword);
+    this.setState({
+      isPriceFieldActive: true,
+      isNameFieldActive: false,
+    });
+  }
+
   render() {
+    const { activeIndex, isNameFieldActive, isPriceFieldActive } = this.state;
     const { match } = this.props;
     const { isFetchingProducts, productList } = this.props.product;
     return (
@@ -95,12 +152,34 @@ class Admin extends Component {
               <Table>
                 <thead>
                   <tr>
-                    <th><Icon iconName='double-caret-vertical' />No</th>
-                    <th><Icon iconName='double-caret-vertical' />Product Name</th>
-                    <th><Icon iconName='double-caret-vertical' />Product Price</th>
+                    <TableHeaderCellWithSort>No</TableHeaderCellWithSort>
+                    <TableHeaderCellWithSort onClick={this.sortProductByName}>
+                      <Icon
+                        iconName={
+                          isNameFieldActive && !isPriceFieldActive && activeIndex === 1
+                            ? 'sort-desc'
+                            : isNameFieldActive && !isPriceFieldActive && activeIndex === 2
+                              ? 'sort-asc'
+                              : 'sort'
+                        }
+                      />
+                        &nbsp; Product Name
+                    </TableHeaderCellWithSort>
+                    <TableHeaderCellWithSort onClick={this.sortProductByPrice}>
+                      <Icon
+                        iconName={
+                          isPriceFieldActive && !isNameFieldActive && activeIndex === 1
+                            ? 'sort-desc'
+                            : isPriceFieldActive && !isNameFieldActive && activeIndex === 2
+                              ? 'sort-asc'
+                              : 'sort'
+                        }
+                      />
+                        &nbsp; Product Price
+                    </TableHeaderCellWithSort>
                     <TableHeaderCell>Product Description</TableHeaderCell>
                     <th>Product Image</th>
-                    <th><Icon iconName='double-caret-vertical' />Created at</th>
+                    <th>Created at</th>
                     <th style={{ textAlign: 'center' }}>Options</th>
                   </tr>
                 </thead>
@@ -149,7 +228,9 @@ const mapDispatchToProps = {
   showProducts,
   removeProduct,
   showModalDelete,
-  closeModalDelete
+  closeModalDelete,
+  sortProductByName,
+  sortProductByPrice
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Admin);

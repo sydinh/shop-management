@@ -7,7 +7,9 @@ import {
   REMOVE_PRODUCT,
   SHOW_MODAL_DELETE,
   CLOSE_MODAL_DELETE,
-  SEARCH_PRODUCT
+  SEARCH_PRODUCT,
+  SORT_PRODUCTS_BY_NAME,
+  SORT_PRODUCTS_BY_PRICE
 } from 'constants/actionTypes';
 
 const initialState = {
@@ -60,6 +62,14 @@ const product = (state = initialState, action) => {
     case SEARCH_PRODUCT:
       return Object.assign({}, state, {
         productList: action.payload
+      });
+    case SORT_PRODUCTS_BY_NAME:
+      return Object.assign({}, state, {
+        productList: action.payload,
+      });
+    case SORT_PRODUCTS_BY_PRICE:
+      return Object.assign({}, state, {
+        productList: action.payload,
       });
     default:
       return state;

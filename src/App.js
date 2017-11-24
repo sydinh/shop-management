@@ -57,7 +57,7 @@ class App extends Component {
               <AuthRoute exact path='/admin' component={Admin} />
               <AuthRoute path='/admin/products/add' component={ProductForm} />
               <AuthRoute path='/admin/products/edit/:productId' component={ProductUpdate} />
-              <AuthRoute path='/home/product/:productId' component={ProductDetail} />
+              <Route path='/home/product/:productId' component={ProductDetail} />
               <Route component={NotFound} />
             </Switch>
           </div>
