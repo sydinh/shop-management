@@ -57,12 +57,16 @@ const TableHeaderCellWithSort = styled.th`
   }
 `;
 
+const Pagination = styled.ul`
+  margin-top: 30px;
+`;
+
 class Admin extends Component {
   constructor(props) {
     super(props);
     this.state = {
       pageID: 1,
-      limitID: 20,
+      limitID: 100,
       activeIndex: 0,
       sortKeyword: '',
       sortOrderCategories: [
@@ -71,7 +75,11 @@ class Admin extends Component {
         { name: 'asc' },
       ],
       isNameFieldActive: false,
-      isPriceFieldActive: false
+      isPriceFieldActive: false,
+
+      // For pagination
+      currentPage: 1,
+      itemsPerPage: 5
     };
   }
 
@@ -129,10 +137,32 @@ class Admin extends Component {
     });
   }
 
+  handleSetPage = event => {
+    this.setState({
+      currentPage: Number(event.target.id)
+    });
+  }
+
   render() {
-    const { activeIndex, isNameFieldActive, isPriceFieldActive } = this.state;
+    const {
+      activeIndex,
+      isNameFieldActive,
+      isPriceFieldActive,
+      currentPage,
+      itemsPerPage
+    } = this.state;
     const { match } = this.props;
     const { isFetchingProducts, productList } = this.props.product;
+
+    // Pagination Logic
+    const indexOfLastProduct = currentPage * itemsPerPage;
+    const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
+    const currentItems = productList.slice(indexOfFirstProduct, indexOfLastProduct);
+    const pageNumbers = [];
+    for (let i = 1; i <= Math.ceil(productList.length / itemsPerPage); i++) {
+      pageNumbers.push(i);
+    }
+
     return (
       <AdminContainer>
         <Grid>
@@ -195,7 +225,7 @@ class Admin extends Component {
                       </tr>
                   }
                   {
-                    productList.length > 0 && productList.map((product, productNo) =>
+                    productList.length > 0 && currentItems.map((product, productNo) =>
                       <ProductItems
                         key={product.id}
                         productNo={productNo}
@@ -208,6 +238,46 @@ class Admin extends Component {
             </Col>
           </Row>
         </Grid>
+        <Pagination className='pt-button-group pt-large'>
+          <li
+            className={`pt-button ${this.state.currentPage === 1 && 'pt-disabled'}`}
+            id={1}
+            onClick={this.handleSetPage}
+          >
+            First
+          </li>
+          <li
+            className={`pt-button ${this.state.currentPage === 1 && 'pt-disabled'}`}
+            id={this.state.currentPage - 1}
+            onClick={this.handleSetPage}
+          >
+            Previous
+          </li>
+          {pageNumbers.map(number => (
+            <li
+              key={number}
+              id={number}
+              onClick={this.handleSetPage}
+              className={`pt-button ${this.state.currentPage === number && 'pt-intent-primary'}`}
+            >
+              {number}
+            </li>
+          ))}
+          <li
+            className={`pt-button ${this.state.currentPage === pageNumbers.length && 'pt-disabled'}`}
+            id={this.state.currentPage + 1}
+            onClick={this.handleSetPage}
+          >
+            Next
+          </li>
+          <li
+            className={`pt-button ${this.state.currentPage === pageNumbers.length && 'pt-disabled'}`}
+            id={pageNumbers.length}
+            onClick={this.handleSetPage}
+          >
+            Last
+          </li>
+        </Pagination>
         <RemoveModal
           handleDelete={this.deleteItem}
           handleCloseModal={this.closeModal}

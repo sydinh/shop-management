@@ -6,8 +6,8 @@ import styled from 'styled-components';
 import { formatDate } from 'helpers/FormatDate';
 
 const Img = styled.img`
-  max-width: 100px;
-  height: auto;
+  width: 100px;
+  height: 100px;
 `;
 
 const TableData = styled.td``;
